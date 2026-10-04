@@ -1,0 +1,3177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1222">
+  <title>J-Way Rewards</title>
+  <style>
+/* ============================================================================
+   J-Way Rewards — dark playful theme (mobile-first, vanilla CSS)
+   ============================================================================ */
+
+:root {
+  --bg: #0f1222;
+  --bg-2: #171b33;
+  --card: #1c2140;
+  --card-2: #232849;
+  --ink: #f2f4ff;
+  --ink-dim: #a7aed6;
+  --purple: #8b5cf6;
+  --cyan: #22d3ee;
+  --green: #34d399;
+  --red: #f87171;
+  --yellow: #fbbf24;
+  --radius: 16px;
+  --tabbar-h: 68px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- header ---------- */
+header#app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px;
+  background: linear-gradient(180deg, #151933 0%, rgba(21,25,51,0) 100%), var(--bg);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.points-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, rgba(139,92,246,.25), rgba(34,211,238,.25));
+  border: 1px solid rgba(139,92,246,.5);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge-premium {
+  display: none;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #1a1207;
+  white-space: nowrap;
+}
+.badge-premium.on { display: inline-block; }
+
+/* ---------- main / tab content ---------- */
+main#tab-content {
+  flex: 1;
+  padding: 16px 16px calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + 24px);
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 4px 0 12px;
+}
+
+.section-sub {
+  color: var(--ink-dim);
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+/* ---------- tab bar ---------- */
+.tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  min-height: var(--tabbar-h);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: #12162e;
+  border-top: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.tab-btn {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--ink-dim);
+  font-size: 0.72rem;
+  font-weight: 700;
+  min-height: 56px;
+  padding: 10px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.tab-btn .tab-emoji { font-size: 1.45rem; line-height: 1; }
+.tab-btn.active {
+  color: var(--cyan);
+  background: linear-gradient(180deg, rgba(139,92,246,.18), transparent);
+  box-shadow: inset 0 3px 0 var(--purple);
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 20px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  min-height: 52px;
+  cursor: pointer;
+  color: var(--ink);
+  background: var(--card-2);
+  transition: transform .06s ease, opacity .15s ease;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  color: #0b0e1f;
+  box-shadow: 0 4px 18px rgba(139,92,246,.45);
+}
+
+.btn-secondary {
+  background: var(--card-2);
+  border: 1px solid rgba(139,92,246,.4);
+  color: var(--ink);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ---------- cards ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid rgba(139,92,246,.25);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.lock-card {
+  background: var(--card);
+  border: 1px dashed rgba(167,174,214,.5);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  margin-bottom: 14px;
+  text-align: center;
+  color: var(--ink-dim);
+}
+.lock-card .lock-emoji { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+
+/* ---------- games tab ---------- */
+.game-picker {
+  display: grid;
+  gap: 14px;
+}
+
+.game-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid rgba(139,92,246,.3);
+  border-radius: var(--radius);
+  padding: 18px;
+  color: var(--ink);
+  cursor: pointer;
+  min-height: 64px;
+}
+.game-card:active { transform: scale(0.98); }
+.game-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+.game-card p {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.game-card .game-emoji { font-size: 1.6rem; margin-right: 8px; }
+
+/* ---------- HUD / timers (game modules) ---------- */
+.hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.timer-bar {
+  width: 100%;
+  height: 12px;
+  background: #0b0e1f;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  border: 1px solid rgba(139,92,246,.3);
+}
+.timer-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  border-radius: 999px;
+  transition: width .2s linear;
+}
+
+/* ---------- memory match ---------- */
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.mem-card {
+  aspect-ratio: 3 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  background: var(--card-2);
+  border: 2px solid rgba(139,92,246,.4);
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  min-height: 56px;
+}
+.mem-card .back  { display: inline; }
+.mem-card .front { display: none; }
+.mem-card.flipped .back  { display: none; }
+.mem-card.flipped .front { display: inline; }
+.mem-card.flipped {
+  background: #151a38;
+  border-color: var(--cyan);
+}
+.mem-card.matched {
+  background: rgba(52,211,153,.18);
+  border-color: var(--green);
+  cursor: default;
+}
+
+/* ---------- reaction tap ---------- */
+.big-tap {
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 60dvh;
+  border: 0;
+  border-radius: 24px;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #0b0e1f;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.big-tap.wait     { background: var(--red);    color: #fff; }
+.big-tap.go       { background: var(--green);  color: #06281c; }
+.big-tap.tooearly { background: var(--yellow); color: #2a1a05; }
+
+/* ---------- videos tab ---------- */
+.video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0b0e1f;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(139,92,246,.3);
+  margin-bottom: 14px;
+}
+.video-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ---------- premium tab ---------- */
+.perk-list {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+}
+.perk-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(139,92,246,.18);
+  font-size: 1.02rem;
+  line-height: 1.45;
+}
+.perk-list li:last-child { border-bottom: 0; }
+.perk-list .check {
+  color: var(--green);
+  font-weight: 800;
+  margin-right: 8px;
+}
+
+/* ---------- toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + 18px);
+  transform: translateX(-50%) translateY(16px);
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  color: #0b0e1f;
+  font-weight: 800;
+  font-size: 1.05rem;
+  padding: 12px 22px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 100;
+  max-width: calc(100vw - 40px);
+  text-align: center;
+  white-space: nowrap;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- helpers ---------- */
+.row { display: flex; gap: 10px; align-items: center; }
+.row.wrap { flex-wrap: wrap; }
+.mt { margin-top: 14px; }
+.center { text-align: center; }
+.dim { color: var(--ink-dim); }
+.big { font-size: 1.25rem; font-weight: 800; }
+
+@media (min-width: 520px) {
+  body { font-size: 1.05rem; }
+}
+
+</style>
+<!-- GOOGLE ADSENSE: paste your AdSense <script> snippet below this line -->
+</head>
+<body>
+  <header id="app-header"></header>
+  <main id="tab-content"></main>
+  <nav id="tab-bar"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+/* ---- js/config.js ---- */
+// ============================================================================
+// J-Way Rewards — App Configuration
+//
+// ─────────────────────────────────────────────────────────────────────────
+//  JUSTIN: fill in your real keys here.
+//  ─────────────────────────────────────────────────────────────────────────
+//  1. AdMob banner unit id      → paste from AdMob console (Apps > Ad units)
+//  2. AdMob interstitial unit id → paste from AdMob console (Apps > Ad units)
+//  3. Pollfish API key           → paste from Pollfish dashboard (Integrations)
+//  4. PREMIUM_SKU               → the one-time product id you created in the
+//                                 Google Play Console ($4.99 purchase).
+//
+//  Until the AdMob ids are replaced, the Ads module stays a silent no-op
+//  (it skips anything containing the 'XXXX' placeholder) so the app works
+//  fine in the web preview.
+// ============================================================================
+
+window.RewardsConfig = {
+  // PLACEHOLDER - paste real AdMob banner unit id
+  ADMOB_BANNER_ID: 'ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY',
+
+  // PLACEHOLDER - paste real AdMob interstitial unit id
+  ADMOB_INTERSTITIAL_ID: 'ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY',
+
+  // PLACEHOLDER - paste Pollfish API key here
+  POLLFISH_API_KEY: '',
+
+  // Play Console product id for the $4.99 one-time premium purchase
+  PREMIUM_SKU: 'jway_premium_onetime'
+};
+
+</script>
+  <script>
+/* ---- js/ads.js ---- */
+// ============================================================================
+// J-Way Rewards — Ads module (js/ads.js)
+//
+// On the web this is a safe no-op. In the native (Capacitor) build these
+// functions wrap the @capacitor-community/admob plugin.
+// ============================================================================
+
+(function () {
+  'use strict';
+
+  // A placeholder id is never shown — the call is skipped silently.
+  function hasRealId(id) {
+    return typeof id === 'string' && id.length > 0 && id.indexOf('XXXX') === -1;
+  }
+
+  window.Ads = {
+    showBanner: function () {
+      var adId = window.RewardsConfig && window.RewardsConfig.ADMOB_BANNER_ID;
+      if (!hasRealId(adId)) {
+        console.debug('[Ads] showBanner: no real AdMob banner id configured — skipping.');
+        return;
+      }
+
+      // ── Capacitor native stub ────────────────────────────────────────────
+      // const { AdMob } = await import('@capacitor-community/admob');
+      // await AdMob.showBanner({
+      //   adId: adId,
+      //   position: 'bottom',
+      //   adSize: 'BANNER',
+      //   margin: 56   // keep clear of the tab bar
+      // });
+      // ────────────────────────────────────────────────────────────────────
+      console.debug('[Ads] showBanner: (web build — no-op, stub above for Capacitor)');
+    },
+
+    showInterstitial: function () {
+      var adId = window.RewardsConfig && window.RewardsConfig.ADMOB_INTERSTITIAL_ID;
+      if (!hasRealId(adId)) {
+        console.debug('[Ads] showInterstitial: no real AdMob interstitial id configured — skipping.');
+        return;
+      }
+
+      // ── Capacitor native stub ────────────────────────────────────────────
+      // const { AdMob } = await import('@capacitor-community/admob');
+      // await AdMob.prepareInterstitial({ adId: adId });
+      // await AdMob.showInterstitial();
+      // ────────────────────────────────────────────────────────────────────
+      console.debug('[Ads] showInterstitial: (web build — no-op, stub above for Capacitor)');
+    }
+  };
+})();
+
+</script>
+  <script>
+/* ---- js/games/trivia.js ---- */
+/* FactFuel Trivia — window.Games.trivia
+ * Uses: window.RewardsApp.awardPoints / onGameOver / toast / isPremium / goToTab
+ * Vanilla JS only. start(el) builds the full UI inside el and tears down
+ * any timers from a previous game when re-started.
+ */
+(function () {
+  'use strict';
+
+  var QUESTION_TIME = 15;   // seconds per question
+  var ROUND_SIZE = 10;
+  var BONUS_SIZE = 10;
+
+  // ---------------------------------------------------------------- pool --
+  // 30 questions built ONLY from the verified FactFuel facts.
+  var QUESTIONS = [
+    // -- Ocean --
+    { q: 'How much gold is dissolved in Earth\'s oceans?',
+      choices: ['~20 thousand tons', '~20 million tons', '~2 billion tons', 'None — gold can\'t dissolve in water'],
+      answer: 1,
+      fact: 'The ocean holds roughly 20 million tons of dissolved gold — about 2.5 kg per person — but it\'s far too dilute to mine.' },
+    { q: 'Which has been mapped in greater detail?',
+      choices: ['The ocean floor', 'The surface of Mars', 'The far side of the Moon', 'The Amazon rainforest floor'],
+      answer: 1,
+      fact: 'Mars has been mapped in more detail than the floor of Earth\'s own oceans.' },
+    { q: 'A blue whale\'s heartbeat can be heard from how far away?',
+      choices: ['200 yards', '2 miles', '20 miles', '200 miles'],
+      answer: 1,
+      fact: 'A blue whale\'s heartbeat can be heard from 2 miles away.' },
+    { q: 'If all the gold dissolved in the ocean were shared equally, how much would each person get?',
+      choices: ['2.5 grams', '250 grams', '2.5 kilograms', '25 kilograms'],
+      answer: 2,
+      fact: 'The ocean\'s ~20 million tons of dissolved gold works out to about 2.5 kg per person.' },
+    // -- Body --
+    { q: 'How often does your stomach grow a new lining?',
+      choices: ['Every few hours', 'Every 3–4 days', 'Once a month', 'Once a year'],
+      answer: 1,
+      fact: 'Your stomach gets a brand-new lining every 3–4 days so it doesn\'t digest itself.' },
+    { q: 'What can\'t you do while holding your nose shut?',
+      choices: ['Blink', 'Hum', 'Swallow', 'Smile'],
+      answer: 1,
+      fact: 'It\'s impossible to hum while holding your nose shut — try it!' },
+    { q: 'Ounce for ounce, human bones are stronger than…',
+      choices: ['Steel', 'Concrete', 'Titanium', 'Kevlar'],
+      answer: 1,
+      fact: 'Ounce for ounce, human bones are stronger than concrete.' },
+    { q: 'Why does the stomach need a new lining every 3–4 days?',
+      choices: ['To taste food better', 'So it doesn\'t digest itself', 'To absorb vitamins faster', 'To stay warm'],
+      answer: 1,
+      fact: 'The stomach renews its lining every 3–4 days to avoid being digested by its own acid.' },
+    // -- Space --
+    { q: 'What\'s true about a day on Venus?',
+      choices: ['It\'s shorter than Earth\'s day', 'It\'s longer than its year', 'It never ends', 'It has two sunrises'],
+      answer: 1,
+      fact: 'A single day on Venus lasts longer than its entire year.' },
+    { q: 'Which planet would float if dropped into a giant bathtub?',
+      choices: ['Jupiter', 'Saturn', 'Earth', 'Mars'],
+      answer: 1,
+      fact: 'Saturn is less dense than water, so it would float.' },
+    { q: 'Which is greater?',
+      choices: ['Grains of sand on Earth\'s beaches', 'Stars in the universe', 'They\'re exactly equal', 'Nobody can estimate either'],
+      answer: 1,
+      fact: 'There are more stars in the universe than grains of sand on all of Earth\'s beaches.' },
+    { q: 'True or false: a year on Venus is shorter than a day on Venus.',
+      choices: ['True', 'False', 'Only in leap years', 'Scientists aren\'t sure'],
+      answer: 0,
+      fact: 'True — a Venus day is longer than its year, so its year is the shorter of the two.' },
+    // -- Animals --
+    { q: 'How many hearts does an octopus have?',
+      choices: ['One', 'Two', 'Three', 'Four'],
+      answer: 2,
+      fact: 'An octopus has three hearts — and its blood is blue.' },
+    { q: 'Where is a shrimp\'s heart located?',
+      choices: ['In its tail', 'In its head', 'Along its legs', 'It has no heart'],
+      answer: 1,
+      fact: 'A shrimp\'s heart is in its head.' },
+    { q: 'Why is wombat poop cube-shaped?',
+      choices: ['So it stacks neatly', 'So it doesn\'t roll away', 'It isn\'t — it\'s round', 'To attract mates'],
+      answer: 1,
+      fact: 'Wombat poop is cube-shaped so it doesn\'t roll away, marking its territory.' },
+    { q: 'What color is an octopus\'s blood?',
+      choices: ['Red', 'Blue', 'Green', 'Clear'],
+      answer: 1,
+      fact: 'An octopus has three hearts and blue blood.' },
+    // -- Food --
+    { q: 'Peanut oil can be turned into which explosive?',
+      choices: ['TNT', 'Nitroglycerin', 'Gunpowder', 'C-4'],
+      answer: 1,
+      fact: 'Peanut oil can be turned into nitroglycerin — peanuts were even used in dynamite.' },
+    { q: 'Which food never spoils?',
+      choices: ['Honey', 'White rice', 'Hard cheese', 'Chocolate'],
+      answer: 0,
+      fact: 'Honey never spoils — 3,000-year-old honey found in Egyptian tombs is still edible.' },
+    { q: 'Why do apples float?',
+      choices: ['They\'re 25% air', 'They repel water', 'They\'re full of sugar', 'Their skin traps heat'],
+      answer: 0,
+      fact: 'Apples float because they\'re 25% air.' },
+    { q: 'Edible honey was found in ancient Egyptian tombs. How old was it?',
+      choices: ['300 years', '1,000 years', '3,000 years', '10,000 years'],
+      answer: 2,
+      fact: 'Honey never spoils — 3,000-year-old Egyptian tomb honey is still perfectly edible.' },
+    // -- History --
+    { q: 'Cleopatra lived closer in time to which event?',
+      choices: ['The pyramids\' construction', 'The Moon landing', 'The fall of Rome', 'The first Olympics'],
+      answer: 1,
+      fact: 'Cleopatra lived closer to the Moon landing (1969) than to the construction of the pyramids.' },
+    { q: 'Which is older?',
+      choices: ['The Aztec Empire', 'Oxford University', 'The Roman Colosseum', 'The printing press'],
+      answer: 1,
+      fact: 'Oxford University is older than the Aztec Empire.' },
+    { q: 'Which creatures were still alive when the pyramids were built?',
+      choices: ['Woolly mammoths', 'Saber-toothed tigers', 'Dodo birds', 'Giant sloths'],
+      answer: 0,
+      fact: 'Woolly mammoths were still alive when the pyramids were being built.' },
+    { q: 'True or false: Oxford University predates the Aztec Empire.',
+      choices: ['True', 'False', 'They were founded the same year', 'Impossible to know'],
+      answer: 0,
+      fact: 'True — Oxford University is older than the Aztec Empire.' },
+    // -- UFC --
+    { q: 'What was unusual about the first UFC tournament?',
+      choices: ['It had no weight classes', 'It was fought underwater', 'Only women competed', 'It lasted 3 days'],
+      answer: 0,
+      fact: 'The first UFC had no weight classes — a 400-lb sumo wrestler faced a 170-lb kickboxer.' },
+    { q: 'How long was the fastest knockout in UFC history?',
+      choices: ['5 seconds', '30 seconds', '1 minute', '2 minutes'],
+      answer: 0,
+      fact: 'The fastest UFC KO took just 5 seconds — a flying knee.' },
+    { q: 'The UFC was bought in 2001 for $2 million. What is it worth now?',
+      choices: ['$200 million', '$2 billion', 'Over $10 billion', '$50 million'],
+      answer: 2,
+      fact: 'Bought for $2M in 2001, the UFC is now worth $10 billion or more.' },
+    // -- Baseball --
+    { q: 'How many double stitches are on an MLB baseball?',
+      choices: ['54', '108', '216', '1,080'],
+      answer: 1,
+      fact: 'An MLB ball has 108 double stitches.' },
+    { q: 'How long was the longest professional baseball game ever?',
+      choices: ['18 innings / 5h 12m', '25 innings / 8h 6m', '30 innings / 9h 45m', '22 innings / 7h 20m'],
+      answer: 1,
+      fact: 'The longest pro game went 25 innings and 8 hours 6 minutes — the 1984 White Sox vs. Brewers.' },
+    { q: 'Nolan Ryan threw 7 no-hitters. What\'s the most anyone else has thrown?',
+      choices: ['4', '5', '6', '7'],
+      answer: 0,
+      fact: 'Nolan Ryan threw 7 no-hitters — no one else has thrown more than 4.' }
+  ];
+
+  // ------------------------------------------------------------ bonus --
+  // 15 extra questions: different angles on the same verified facts
+  // (true/false or "which" variants with different correct answers).
+  var BONUS = [
+    { q: 'True or false: Earth\'s oceans hold about 20 million tons of dissolved gold.',
+      choices: ['True', 'False'], answer: 0,
+      fact: 'True — the ocean holds roughly 20 million tons of dissolved gold, about 2.5 kg per person.' },
+    { q: 'True or false: a blue whale\'s heartbeat can be heard from 20 miles away.',
+      choices: ['True', 'False'], answer: 1,
+      fact: 'False — a blue whale\'s heartbeat can be heard from 2 miles away.' },
+    { q: 'Which animal\'s heartbeat can be heard 2 miles away?',
+      choices: ['Octopus', 'Blue whale', 'Shrimp', 'Wombat'], answer: 1,
+      fact: 'The blue whale\'s heartbeat can be heard from 2 miles away.' },
+    { q: 'True or false: you can hum while pinching your nose shut.',
+      choices: ['True', 'False'], answer: 1,
+      fact: 'False — it\'s impossible to hum while holding your nose shut.' },
+    { q: 'Which part of your body renews its lining every 3–4 days?',
+      choices: ['Skin', 'Stomach', 'Tongue', 'Lungs'], answer: 1,
+      fact: 'Your stomach gets a brand-new lining every 3–4 days so it doesn\'t digest itself.' },
+    { q: 'True or false: ounce for ounce, human bones are stronger than concrete.',
+      choices: ['True', 'False'], answer: 0,
+      fact: 'True — ounce for ounce, human bones are stronger than concrete.' },
+    { q: 'On Venus, which takes longer?',
+      choices: ['A day', 'A year', 'They\'re equal', 'Neither — Venus doesn\'t rotate'], answer: 0,
+      fact: 'A day on Venus is longer than its year.' },
+    { q: 'True or false: Saturn is denser than water and would sink in a giant ocean.',
+      choices: ['True', 'False'], answer: 1,
+      fact: 'False — Saturn is less dense than water, so it would float.' },
+    { q: 'True or false: there are more stars in the universe than grains of sand on Earth\'s beaches.',
+      choices: ['True', 'False'], answer: 0,
+      fact: 'True — more stars in the universe than grains of sand on all of Earth\'s beaches.' },
+    { q: 'An octopus has how many hearts — 1, 2, or 3?',
+      choices: ['1', '2', '3'], answer: 2,
+      fact: 'An octopus has three hearts — and its blood is blue.' },
+    { q: 'A shrimp\'s heart is in its…',
+      choices: ['Tail', 'Head', 'Middle segment', 'Legs'], answer: 1,
+      fact: 'A shrimp\'s heart is in its head.' },
+    { q: 'True or false: wombat poop is cube-shaped so it doesn\'t roll away.',
+      choices: ['True', 'False'], answer: 0,
+      fact: 'True — wombat poop is cube-shaped so it doesn\'t roll away.' },
+    { q: 'True or false: peanut oil can be converted into nitroglycerin.',
+      choices: ['True', 'False'], answer: 0,
+      fact: 'True — peanut oil can be turned into nitroglycerin; peanuts were even used in dynamite.' },
+    { q: 'True or false: honey found in a 3,000-year-old Egyptian tomb is still edible.',
+      choices: ['True', 'False'], answer: 0,
+      fact: 'True — honey never spoils, so 3,000-year-old tomb honey is still edible.' },
+    { q: 'What percentage of an apple is air?',
+      choices: ['5%', '25%', '50%', '75%'], answer: 1,
+      fact: 'Apples are 25% air — that\'s why they float.' }
+  ];
+
+  // ------------------------------------------------------------- state --
+  var cleanup = null; // teardown for the currently running game, if any
+
+  function app() { return window.RewardsApp; }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null) n.textContent = text;
+    return n;
+  }
+
+  // -------------------------------------------------------------- game --
+  function runRound(root, pool, size, title) {
+    var questions = shuffle(pool).slice(0, size);
+    var index = 0, streak = 0, bestStreak = 0, correct = 0, earned = 0;
+    var timerId = null, answered = false;
+
+    function stopTimer() {
+      if (timerId !== null) { clearInterval(timerId); timerId = null; }
+    }
+
+    function renderHud(card) {
+      var hud = el('div', 'hud');
+      hud.appendChild(el('span', null, 'Question ' + (index + 1) + ' / ' + questions.length));
+      hud.appendChild(el('span', null, 'Streak: ' + streak + ' 🔥'));
+      hud.appendChild(el('span', null, '+' + earned + ' pts'));
+      card.appendChild(hud);
+    }
+
+    function renderTimer(card) {
+      var bar = el('div', 'timer-bar');
+      var fill = el('div', 'timer-fill');
+      fill.style.width = '100%';
+      bar.appendChild(fill);
+      card.appendChild(bar);
+      var remaining = QUESTION_TIME;
+      timerId = setInterval(function () {
+        remaining -= 0.1;
+        if (remaining <= 0) {
+          stopTimer();
+          fill.style.width = '0%';
+          onTimeout();
+          return;
+        }
+        fill.style.width = (remaining / QUESTION_TIME * 100) + '%';
+      }, 100);
+    }
+
+    function lockButtons(buttons) {
+      for (var i = 0; i < buttons.length; i++) buttons[i].disabled = true;
+    }
+
+    function showQuestion() {
+      answered = false;
+      root.innerHTML = '';
+      var card = el('div', 'card');
+      card.appendChild(el('h3', null, title));
+      renderHud(card);
+      renderTimer(card);
+
+      var item = questions[index];
+      var qEl = el('p', null, item.q);
+      qEl.style.fontSize = '1.05rem';
+      qEl.style.fontWeight = '600';
+      card.appendChild(qEl);
+
+      var buttons = [];
+      var wrap = el('div', null);
+      wrap.style.display = 'grid';
+      wrap.style.gap = '8px';
+      item.choices.forEach(function (choice, ci) {
+        var b = el('button', 'btn btn-secondary', choice);
+        b.style.textAlign = 'left';
+        b.addEventListener('click', function () { onAnswer(ci, buttons, item, card); });
+        buttons.push(b);
+        wrap.appendChild(b);
+      });
+      card.appendChild(wrap);
+      root.appendChild(card);
+    }
+
+    function onAnswer(choiceIdx, buttons, item, card) {
+      if (answered) return;
+      answered = true;
+      stopTimer();
+      lockButtons(buttons);
+      var correctBtn = buttons[item.answer];
+      correctBtn.style.background = '#22c55e';
+      correctBtn.style.borderColor = '#16a34a';
+      correctBtn.style.color = '#fff';
+      if (choiceIdx === item.answer) {
+        var pts = 10 + 2 * streak;
+        app().awardPoints(pts, 'Trivia correct');
+        earned += pts;
+        correct++;
+        streak++;
+        if (streak > bestStreak) bestStreak = streak;
+        app().toast('Correct! +' + pts + ' pts');
+      } else {
+        var wrongBtn = buttons[choiceIdx];
+        wrongBtn.style.background = '#ef4444';
+        wrongBtn.style.borderColor = '#dc2626';
+        wrongBtn.style.color = '#fff';
+        streak = 0;
+      }
+      showFact(card, item);
+    }
+
+    function onTimeout() {
+      if (answered) return;
+      answered = true;
+      var card = root.querySelector('.card');
+      var buttons = card ? Array.prototype.slice.call(card.querySelectorAll('button')) : [];
+      lockButtons(buttons);
+      var item = questions[index];
+      if (buttons[item.answer]) {
+        buttons[item.answer].style.background = '#22c55e';
+        buttons[item.answer].style.borderColor = '#16a34a';
+        buttons[item.answer].style.color = '#fff';
+      }
+      streak = 0;
+      app().toast("Time's up!");
+      if (card) showFact(card, item);
+    }
+
+    function showFact(card, item) {
+      var f = el('p', null, '💡 ' + item.fact);
+      f.style.marginTop = '12px';
+      f.style.fontStyle = 'italic';
+      card.appendChild(f);
+      var next = el('button', 'btn btn-primary', (index + 1 < questions.length) ? 'Next →' : 'See results');
+      next.style.marginTop = '12px';
+      next.style.width = '100%';
+      next.addEventListener('click', function () {
+        index++;
+        if (index < questions.length) showQuestion();
+        else showResults();
+      });
+      card.appendChild(next);
+    }
+
+    function showResults() {
+      stopTimer();
+      root.innerHTML = '';
+      var card = el('div', 'card');
+      card.style.textAlign = 'center';
+      card.appendChild(el('h3', null, '🏁 Round complete!'));
+      card.appendChild(el('p', null, 'Correct: ' + correct + ' / ' + questions.length));
+      card.appendChild(el('p', null, 'Best streak: ' + bestStreak + ' 🔥'));
+      card.appendChild(el('p', null, 'Earned this round: +' + earned + ' pts'));
+      var again = el('button', 'btn btn-primary', 'Play again');
+      again.style.marginTop = '12px';
+      again.style.width = '100%';
+      again.addEventListener('click', function () { runRound(root, pool, size, title); });
+      card.appendChild(again);
+      root.appendChild(card);
+      app().onGameOver('trivia');
+    }
+
+    showQuestion();
+    return stopTimer;
+  }
+
+  // -------------------------------------------------------------- menu --
+  function startMenu(root) {
+    root.innerHTML = '';
+    var card = el('div', 'card');
+    card.style.textAlign = 'center';
+    card.appendChild(el('h3', null, '🧠 FactFuel Trivia'));
+    card.appendChild(el('p', null, '10 questions · 15 seconds each · streaks earn bonus points!'));
+
+    var startBtn = el('button', 'btn btn-primary', 'Start round');
+    startBtn.style.width = '100%';
+    startBtn.style.marginTop = '8px';
+    startBtn.addEventListener('click', function () {
+      cleanup = runRound(root, QUESTIONS, ROUND_SIZE, '🧠 FactFuel Trivia');
+    });
+    card.appendChild(startBtn);
+
+    if (app().isPremium()) {
+      var bonusBtn = el('button', 'btn btn-secondary', '🎁 Bonus Pack (Premium)');
+      bonusBtn.style.width = '100%';
+      bonusBtn.style.marginTop = '8px';
+      bonusBtn.addEventListener('click', function () {
+        cleanup = runRound(root, BONUS, BONUS_SIZE, '🎁 Bonus Pack');
+      });
+      card.appendChild(bonusBtn);
+    } else {
+      var lock = el('div', 'lock-card');
+      lock.style.marginTop = '12px';
+      lock.style.textAlign = 'center';
+      lock.appendChild(el('p', null, '🎁 Bonus Pack — Premium only'));
+      lock.appendChild(el('p', null, '15 extra questions for Premium members.'));
+      var go = el('button', 'btn btn-primary', 'Go Premium');
+      go.addEventListener('click', function () { app().goToTab('premium'); });
+      lock.appendChild(go);
+      card.appendChild(lock);
+    }
+
+    root.appendChild(card);
+  }
+
+  // ------------------------------------------------------------ export --
+  window.Games = window.Games || {};
+  window.Games.trivia = {
+    QUESTIONS: QUESTIONS,
+    BONUS: BONUS,
+    start: function (root) {
+      if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+      startMenu(root);
+    }
+  };
+})();
+
+</script>
+  <script>
+/* ---- js/games/memory.js ---- */
+/* Memory Match — window.Games.memory
+ * 4x4 grid, 8 emoji pairs. Flip two cards; matches stay, mismatches flip
+ * back after 800ms. Win → points = max(20, 150 - moves*3 - seconds).
+ * Uses: window.RewardsApp.awardPoints / onGameOver / toast.
+ * Vanilla JS only. start(el) clears el, builds the UI, and tears down
+ * any timers from a previous game when re-started.
+ */
+(function () {
+  'use strict';
+
+  var EMOJI = ['🎮', '⭐', '🚀', '🎵', '🐙', '🍕', '🏆', '💎'];
+  var FLIP_BACK_MS = 800;
+
+  var cleanup = null; // teardown for the currently running game, if any
+
+  function app() { return window.RewardsApp; }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null) n.textContent = text;
+    return n;
+  }
+
+  function play(root) {
+    root.innerHTML = '';
+
+    var moves = 0, matched = 0, started = false;
+    var firstCard = null, lock = false;
+    var timerId = null, startTime = 0, flipTimeout = null;
+
+    function stopTimer() {
+      if (timerId !== null) { clearInterval(timerId); timerId = null; }
+      if (flipTimeout !== null) { clearTimeout(flipTimeout); flipTimeout = null; }
+    }
+
+    var hud = el('div', 'hud');
+    var movesEl = el('span', null, 'Moves: 0');
+    var timeEl = el('span', null, 'Time: 0s');
+    hud.appendChild(movesEl);
+    hud.appendChild(timeEl);
+    root.appendChild(hud);
+
+    var grid = el('div', 'grid-4');
+    grid.style.marginTop = '12px';
+    root.appendChild(grid);
+
+    // Build 8 pairs, shuffled.
+    var deck = shuffle(EMOJI.concat(EMOJI));
+    var cards = [];
+
+    function tick() {
+      var s = Math.floor((Date.now() - startTime) / 1000);
+      timeEl.textContent = 'Time: ' + s + 's';
+    }
+
+    function seconds() {
+      return Math.floor((Date.now() - startTime) / 1000);
+    }
+
+    function onCardClick(card, face) {
+      if (lock) return;
+      if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+      if (!started) {
+        started = true;
+        startTime = Date.now();
+        timerId = setInterval(tick, 500);
+      }
+      card.classList.add('flipped');
+      face.textContent = card.dataset.face;
+
+      if (firstCard === null) {
+        firstCard = card;
+        return;
+      }
+      moves++;
+      movesEl.textContent = 'Moves: ' + moves;
+
+      if (firstCard.dataset.face === card.dataset.face) {
+        // Match!
+        firstCard.classList.add('matched');
+        card.classList.add('matched');
+        firstCard = null;
+        matched += 2;
+        app().toast('Nice match! 🎉');
+        if (matched === 16) {
+          var secs = seconds();
+          stopTimer();
+          var pts = Math.max(20, 150 - moves * 3 - secs);
+          app().awardPoints(pts, 'Memory Match win');
+          showWin(pts, secs);
+        }
+      } else {
+        // Mismatch — flip both back after 800ms.
+        lock = true;
+        var a = firstCard, b = card;
+        firstCard = null;
+        flipTimeout = setTimeout(function () {
+          flipTimeout = null;
+          a.classList.remove('flipped');
+          b.classList.remove('flipped');
+          a.querySelector('.face').textContent = '❓';
+          b.querySelector('.face').textContent = '❓';
+          lock = false;
+        }, FLIP_BACK_MS);
+      }
+    }
+
+    deck.forEach(function (face) {
+      var card = el('button', 'mem-card');
+      card.dataset.face = face;
+      card.setAttribute('aria-label', 'Memory card');
+      var inner = el('span', 'face', '❓');
+      inner.style.fontSize = '1.6rem';
+      card.appendChild(inner);
+      card.addEventListener('click', function () { onCardClick(card, inner); });
+      cards.push(card);
+      grid.appendChild(card);
+    });
+
+    function showWin(pts, secs) {
+      root.innerHTML = '';
+      var card = el('div', 'card');
+      card.style.textAlign = 'center';
+      card.appendChild(el('h3', null, '🏆 You win!'));
+      card.appendChild(el('p', null, 'All 8 pairs matched!'));
+      card.appendChild(el('p', null, 'Moves: ' + moves));
+      card.appendChild(el('p', null, 'Time: ' + secs + 's'));
+      card.appendChild(el('p', null, 'Earned: +' + pts + ' pts'));
+      var again = el('button', 'btn btn-primary', 'Play again');
+      again.style.marginTop = '12px';
+      again.style.width = '100%';
+      again.addEventListener('click', function () { play(root); });
+      card.appendChild(again);
+      root.appendChild(card);
+      app().onGameOver('memory');
+    }
+
+    return stopTimer;
+  }
+
+  function startMenu(root) {
+    root.innerHTML = '';
+    var card = el('div', 'card');
+    card.style.textAlign = 'center';
+    card.appendChild(el('h3', null, '🃏 Memory Match'));
+    card.appendChild(el('p', null, 'Flip the cards and match all 8 pairs. Fewer moves + faster time = more points!'));
+    var startBtn = el('button', 'btn btn-primary', 'Play');
+    startBtn.style.width = '100%';
+    startBtn.style.marginTop = '8px';
+    startBtn.addEventListener('click', function () {
+      cleanup = play(root);
+    });
+    card.appendChild(startBtn);
+    root.appendChild(card);
+  }
+
+  window.Games = window.Games || {};
+  window.Games.memory = {
+    start: function (root) {
+      if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+      startMenu(root);
+    }
+  };
+})();
+
+</script>
+  <script>
+/* ---- js/games/reaction.js ---- */
+/* Reaction Tap — window.Games.reaction
+ * 5 rounds. Wait for the red box to turn green, then tap fast.
+ * Tapping too early voids the round and restarts it.
+ * Points per round: <250ms → 50, <350ms → 30, <500ms → 15, else 5.
+ * Uses: window.RewardsApp.awardPoints / onGameOver / toast.
+ * Vanilla JS only. start(el) clears el, builds the UI, and tears down
+ * any timers from a previous game when re-started.
+ */
+(function () {
+  'use strict';
+
+  var ROUNDS = 5;
+  var MIN_DELAY = 1500;  // ms before the box turns green
+  var MAX_DELAY = 4000;
+  var TOO_SOON_DELAY = 1000; // pause shown after a false start
+
+  var cleanup = null; // teardown for the currently running game, if any
+
+  function app() { return window.RewardsApp; }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null) n.textContent = text;
+    return n;
+  }
+
+  function pointsFor(ms) {
+    if (ms < 250) return 50;
+    if (ms < 350) return 30;
+    if (ms < 500) return 15;
+    return 5;
+  }
+
+  function play(root) {
+    root.innerHTML = '';
+
+    var round = 0;           // 0-based index of the current round
+    var results = [];        // ms per completed round
+    var total = 0;           // base points awarded so far
+    var timeoutId = null;
+    var goTime = 0;          // performance.now() when the box turned green
+    var phase = 'idle';      // 'wait' | 'go' | 'done' | 'toosoon'
+
+    function clearPending() {
+      if (timeoutId !== null) { clearTimeout(timeoutId); timeoutId = null; }
+    }
+
+    var title = el('h3', null, '⚡ Reaction Tap');
+    title.style.textAlign = 'center';
+    root.appendChild(title);
+
+    var roundEl = el('p', null, '');
+    roundEl.style.textAlign = 'center';
+    roundEl.style.fontWeight = '600';
+    root.appendChild(roundEl);
+
+    var box = el('div', 'big-tap wait', 'Wait for green…');
+    root.appendChild(box);
+
+    var msg = el('p', null, '');
+    msg.style.textAlign = 'center';
+    msg.style.minHeight = '1.5em';
+    root.appendChild(msg);
+
+    var nextBtn = el('button', 'btn btn-primary', 'Next round →');
+    nextBtn.style.width = '100%';
+    nextBtn.style.display = 'none';
+    root.appendChild(nextBtn);
+
+    function startRound() {
+      roundEl.textContent = 'Round ' + (round + 1) + ' / ' + ROUNDS;
+      msg.textContent = '';
+      nextBtn.style.display = 'none';
+      box.className = 'big-tap wait';
+      box.textContent = 'Wait for green…';
+      phase = 'wait';
+      var delay = MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY);
+      timeoutId = setTimeout(function () {
+        timeoutId = null;
+        box.className = 'big-tap go';
+        box.textContent = 'TAP!';
+        goTime = performance.now();
+        phase = 'go';
+      }, delay);
+    }
+
+    function onTap(e) {
+      if (e) e.preventDefault();
+      if (phase === 'wait') {
+        // Too early — void this round and restart it.
+        clearPending();
+        phase = 'toosoon';
+        box.className = 'big-tap wait';
+        box.textContent = 'Too soon!';
+        msg.textContent = 'You tapped before green — round restarted.';
+        app().toast('Too soon! Round restarted.');
+        timeoutId = setTimeout(function () {
+          timeoutId = null;
+          startRound(); // same round index → round retried
+        }, TOO_SOON_DELAY);
+      } else if (phase === 'go') {
+        phase = 'done';
+        var ms = Math.round(performance.now() - goTime);
+        var pts = pointsFor(ms);
+        app().awardPoints(pts, 'Reaction Tap round');
+        results.push(ms);
+        total += pts;
+        box.className = 'big-tap';
+        box.textContent = ms + ' ms';
+        msg.textContent = '+' + pts + ' pts — nice!';
+        app().toast(ms + 'ms — +' + pts + ' pts');
+        if (round + 1 < ROUNDS) {
+          nextBtn.textContent = 'Next round →';
+          nextBtn.style.display = 'block';
+        } else {
+          showSummary();
+        }
+      }
+      // taps during 'done', 'toosoon', or 'idle' are ignored
+    }
+
+    box.addEventListener('pointerdown', onTap);
+    nextBtn.addEventListener('click', function () {
+      round++;
+      startRound();
+    });
+
+    function showSummary() {
+      clearPending();
+      phase = 'idle';
+      root.innerHTML = '';
+      var card = el('div', 'card');
+      card.style.textAlign = 'center';
+      card.appendChild(el('h3', null, '⚡ Results'));
+      var list = el('div', null);
+      var best = Infinity;
+      results.forEach(function (ms, i) {
+        if (ms < best) best = ms;
+        var row = el('p', null, 'Round ' + (i + 1) + ': ' + ms + ' ms → +' + pointsFor(ms) + ' pts');
+        row.style.margin = '4px 0';
+        list.appendChild(row);
+      });
+      card.appendChild(list);
+      card.appendChild(el('p', null, 'Best time: ' + best + ' ms'));
+      var totalEl = el('p', null, 'Total earned: +' + total + ' pts');
+      totalEl.style.fontWeight = '700';
+      card.appendChild(totalEl);
+      var again = el('button', 'btn btn-primary', 'Play again');
+      again.style.marginTop = '12px';
+      again.style.width = '100%';
+      again.addEventListener('click', function () { play(root); });
+      card.appendChild(again);
+      root.appendChild(card);
+      app().onGameOver('reaction');
+    }
+
+    startRound();
+
+    return function teardown() {
+      clearPending();
+    };
+  }
+
+  function startMenu(root) {
+    root.innerHTML = '';
+    var card = el('div', 'card');
+    card.style.textAlign = 'center';
+    card.appendChild(el('h3', null, '⚡ Reaction Tap'));
+    card.appendChild(el('p', null, '5 rounds. Tap the box the instant it turns green — tap too early and the round restarts!'));
+    card.appendChild(el('p', null, 'Under 250ms = 50 pts · under 350ms = 30 pts · under 500ms = 15 pts'));
+    var startBtn = el('button', 'btn btn-primary', 'Start');
+    startBtn.style.width = '100%';
+    startBtn.style.marginTop = '8px';
+    startBtn.addEventListener('click', function () {
+      cleanup = play(root);
+    });
+    card.appendChild(startBtn);
+    root.appendChild(card);
+  }
+
+  window.Games = window.Games || {};
+  window.Games.reaction = {
+    start: function (root) {
+      if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+      startMenu(root);
+    }
+  };
+})();
+
+</script>
+  <script>
+/* ---- js/games/spin.js ---- */
+// ============================================================================
+// J-Way Rewards — Daily Spin Wheel (js/games/spin.js)
+//
+// Canvas spin wheel with 6 weighted prize segments, easeOutCubic spin
+// animation, WebAudio tick sounds, and localStorage daily spin limits.
+// Contract: window.Games.spin.start(el)
+// ============================================================================
+window.Games = window.Games || {};
+window.Games.spin = {
+  start: function (el) {
+    'use strict';
+
+    // ---- cleanup any previous run ----------------------------------------
+    if (el._jwaySpinCleanup) {
+      try { el._jwaySpinCleanup(); } catch (e) { /* noop */ }
+      el._jwaySpinCleanup = null;
+    }
+    el.innerHTML = '';
+
+    var R = window.RewardsApp;
+    var Ads = window.Ads;
+
+    if (!R) {
+      var err = document.createElement('div');
+      err.className = 'card';
+      err.textContent = 'Spin is unavailable right now — please reload the app.';
+      el.appendChild(err);
+      return;
+    }
+
+    var TAU = Math.PI * 2;
+
+    // segments interleaved so big prizes sit between small ones
+    var SEGMENTS = [
+      { label: '10',   points: 10,   color: '#ef476f', darkText: false, weight: 30 },
+      { label: '250',  points: 250,  color: '#ffd166', darkText: true,  weight: 8  },
+      { label: '25',   points: 25,   color: '#06d6a0', darkText: true,  weight: 25 },
+      { label: 'JP',   jackpot: true, points: 1000, color: '#9b5de5', darkText: false, weight: 5 },
+      { label: '50',   points: 50,   color: '#118ab2', darkText: false, weight: 20 },
+      { label: '100',  points: 100,  color: '#f78c6b', darkText: true,  weight: 12 }
+    ];
+    var SEG = TAU / SEGMENTS.length;
+    var TOTAL_WEIGHT = SEGMENTS.reduce(function (s, g) { return s + g.weight; }, 0);
+
+    // ---- storage ----------------------------------------------------------
+    var K_DAY = 'jway_spin_day';
+    var K_USED = 'jway_spin_used';
+    var K_BONUS = 'jway_spin_bonus';
+
+    function readInt(k) {
+      var v = parseInt(localStorage.getItem(k), 10);
+      return isNaN(v) || v < 0 ? 0 : v;
+    }
+    function todayStr() {
+      var d = new Date();
+      function p(n) { return (n < 10 ? '0' : '') + n; }
+      return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    }
+    // roll over daily counters (bonus spins are "today only" too)
+    if (localStorage.getItem(K_DAY) !== todayStr()) {
+      localStorage.setItem(K_DAY, todayStr());
+      localStorage.setItem(K_USED, '0');
+      localStorage.setItem(K_BONUS, '0');
+    }
+
+    var premium = R.isPremium();
+    var FREE_PER_DAY = premium ? 3 : 1;
+
+    function spinsLeft() {
+      return Math.max(0, FREE_PER_DAY + readInt(K_BONUS) - readInt(K_USED));
+    }
+
+    // ---- mutable run state -------------------------------------------------
+    var state = {
+      angle: Math.random() * TAU,
+      spinning: false,
+      raf: 0,
+      audioCtx: null,
+      dead: false,
+      spinBtn: null
+    };
+
+    // ---- DOM ---------------------------------------------------------------
+    var title = document.createElement('h2');
+    title.className = 'section-title';
+    title.textContent = '🎡 Daily Spin';
+    el.appendChild(title);
+
+    var status = document.createElement('p');
+    status.className = 'dim';
+    status.style.textAlign = 'center';
+    status.style.margin = '0 0 8px';
+    el.appendChild(status);
+
+    var wheelWrap = document.createElement('div');
+    wheelWrap.style.textAlign = 'center';
+    wheelWrap.style.margin = '0 auto';
+    el.appendChild(wheelWrap);
+
+    var SIZE = 320, CX = SIZE / 2, CY = SIZE / 2, RADIUS = SIZE / 2 - 16;
+    var dpr = Math.min(window.devicePixelRatio || 1, 3);
+    var canvas = document.createElement('canvas');
+    canvas.width = Math.round(SIZE * dpr);
+    canvas.height = Math.round(SIZE * dpr);
+    canvas.style.width = SIZE + 'px';
+    canvas.style.maxWidth = '100%';
+    canvas.style.height = 'auto';
+    canvas.style.cursor = 'pointer';
+    canvas.setAttribute('aria-label', 'Prize wheel');
+    var ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    wheelWrap.appendChild(canvas);
+
+    var result = document.createElement('div');
+    result.className = 'card';
+    result.style.display = 'none';
+    result.style.textAlign = 'center';
+    result.style.marginTop = '12px';
+    el.appendChild(result);
+
+    var controls = document.createElement('div');
+    controls.style.textAlign = 'center';
+    controls.style.marginTop = '12px';
+    el.appendChild(controls);
+
+    var back = document.createElement('button');
+    back.className = 'btn btn-secondary';
+    back.type = 'button';
+    back.style.marginTop = '16px';
+    back.textContent = '← Back to games';
+    back.addEventListener('click', function () { R.goToTab('games'); });
+    var backWrap = document.createElement('div');
+    backWrap.style.textAlign = 'center';
+    backWrap.appendChild(back);
+    el.appendChild(backWrap);
+
+    // ---- wheel rendering ----------------------------------------------------
+    function draw(a) {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+
+      ctx.save();
+      ctx.translate(CX, CY);
+
+      // outer rim
+      ctx.beginPath();
+      ctx.arc(0, 0, RADIUS + 10, 0, TAU);
+      ctx.fillStyle = '#2b2d42';
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#ffd166';
+      ctx.stroke();
+
+      // pegs around rim
+      ctx.fillStyle = '#ffd166';
+      for (var p = 0; p < SEGMENTS.length; p++) {
+        var pa = p * SEG + SEG / 2;
+        ctx.beginPath();
+        ctx.arc(Math.cos(pa) * (RADIUS + 4), Math.sin(pa) * (RADIUS + 4), 3, 0, TAU);
+        ctx.fill();
+      }
+
+      ctx.rotate(a);
+      for (var i = 0; i < SEGMENTS.length; i++) {
+        var g = SEGMENTS[i];
+        var a0 = i * SEG, a1 = (i + 1) * SEG;
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, RADIUS, a0, a1);
+        ctx.closePath();
+        ctx.fillStyle = g.color;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+        ctx.stroke();
+
+        ctx.save();
+        ctx.rotate(a0 + SEG / 2);
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = g.darkText ? '#3d2b00' : '#ffffff';
+        ctx.shadowColor = 'rgba(0,0,0,0.35)';
+        ctx.shadowBlur = 4;
+        if (g.jackpot) {
+          ctx.font = 'bold 17px system-ui, sans-serif';
+          ctx.fillText('JACKPOT', RADIUS - 14, -11);
+          ctx.fillText('1000', RADIUS - 14, 11);
+        } else {
+          ctx.font = 'bold 21px system-ui, sans-serif';
+          ctx.fillText(g.label, RADIUS - 16, 0);
+        }
+        ctx.restore();
+      }
+      ctx.restore();
+
+      // center hub
+      ctx.beginPath();
+      ctx.arc(CX, CY, 34, 0, TAU);
+      ctx.fillStyle = '#2b2d42';
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#ffd166';
+      ctx.stroke();
+      ctx.fillStyle = '#ffd166';
+      ctx.font = 'bold 15px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('SPIN', CX, CY);
+
+      // pointer triangle at top
+      ctx.beginPath();
+      ctx.moveTo(CX - 13, 4);
+      ctx.lineTo(CX + 13, 4);
+      ctx.lineTo(CX, 30);
+      ctx.closePath();
+      ctx.fillStyle = '#e63946';
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#ffffff';
+      ctx.stroke();
+    }
+
+    // ---- audio (WebAudio, no assets) -----------------------------------------
+    function ensureAudio() {
+      if (!state.audioCtx) {
+        try {
+          var AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) state.audioCtx = new AC();
+        } catch (e) { state.audioCtx = null; }
+      }
+      if (state.audioCtx && state.audioCtx.state === 'suspended') {
+        state.audioCtx.resume();
+      }
+    }
+    function blip(freq, dur, vol, delay) {
+      if (!state.audioCtx) return;
+      try {
+        var t = state.audioCtx.currentTime + (delay || 0);
+        var o = state.audioCtx.createOscillator();
+        var g = state.audioCtx.createGain();
+        o.type = 'triangle';
+        o.frequency.value = freq;
+        g.gain.setValueAtTime(vol, t);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        o.connect(g);
+        g.connect(state.audioCtx.destination);
+        o.start(t);
+        o.stop(t + dur + 0.03);
+      } catch (e) { /* audio unavailable */ }
+    }
+    function tick() { blip(620 + Math.random() * 260, 0.05, 0.09, 0); }
+    function winJingle() {
+      var notes = [523.25, 659.25, 783.99, 1046.5];
+      for (var i = 0; i < notes.length; i++) blip(notes[i], 0.22, 0.12, i * 0.12);
+    }
+
+    // ---- weighted prize pick --------------------------------------------------
+    function pickWeighted() {
+      var r = Math.random() * TOTAL_WEIGHT;
+      for (var i = 0; i < SEGMENTS.length; i++) {
+        r -= SEGMENTS[i].weight;
+        if (r < 0) return i;
+      }
+      return SEGMENTS.length - 1;
+    }
+
+    // ---- controls / limits UI ---------------------------------------------------
+    function updateStatus() {
+      var n = spinsLeft();
+      status.textContent = 'Spins left today: ' + n + (premium ? ' (premium)' : '');
+    }
+
+    function renderControls() {
+      controls.innerHTML = '';
+      state.spinBtn = null;
+      var left = spinsLeft();
+
+      if (state.spinning) {
+        var wait = document.createElement('button');
+        wait.className = 'btn btn-primary';
+        wait.type = 'button';
+        wait.disabled = true;
+        wait.textContent = 'Spinning…';
+        controls.appendChild(wait);
+        return;
+      }
+
+      if (left > 0) {
+        var spinBtn = document.createElement('button');
+        spinBtn.className = 'btn btn-primary';
+        spinBtn.type = 'button';
+        spinBtn.textContent = '🎡 SPIN';
+        spinBtn.style.fontSize = '18px';
+        spinBtn.style.padding = '12px 40px';
+        spinBtn.addEventListener('click', doSpin);
+        controls.appendChild(spinBtn);
+        state.spinBtn = spinBtn;
+      } else {
+        var out = document.createElement('p');
+        out.className = 'dim';
+        out.style.margin = '4px 0';
+        out.textContent = 'You\u2019re out of spins for today.';
+        controls.appendChild(out);
+
+        // bonus spin via ad — non-premium only
+        if (!premium && Ads && typeof Ads.showInterstitial === 'function') {
+          var bonusBtn = document.createElement('button');
+          bonusBtn.className = 'btn btn-secondary';
+          bonusBtn.type = 'button';
+          bonusBtn.textContent = '🎬 Watch ad for a bonus spin';
+          bonusBtn.addEventListener('click', function () {
+            Ads.showInterstitial();
+            localStorage.setItem(K_BONUS, String(readInt(K_BONUS) + 1));
+            R.toast('Bonus spin added! 🎡');
+            updateStatus();
+            renderControls();
+          });
+          controls.appendChild(bonusBtn);
+        }
+
+        var tomorrow = document.createElement('p');
+        tomorrow.style.margin = '12px 0 0';
+        tomorrow.style.fontWeight = 'bold';
+        tomorrow.textContent = '🎰 Come back tomorrow for more free spins!';
+        controls.appendChild(tomorrow);
+      }
+    }
+
+    function showResult(seg) {
+      result.style.display = 'block';
+      result.innerHTML = '';
+      var big = document.createElement('div');
+      big.className = 'big';
+      var line = document.createElement('p');
+      line.className = 'dim';
+      if (seg.jackpot) {
+        big.textContent = '🎆 JACKPOT! 🎆';
+        line.textContent = 'You won ' + seg.points + ' points!';
+      } else {
+        big.textContent = '🎉 You won ' + seg.points + ' points!';
+        line.textContent = 'Nice spin — good luck next time for the jackpot!';
+      }
+      result.appendChild(big);
+      result.appendChild(line);
+    }
+    function hideResult() {
+      result.style.display = 'none';
+      result.innerHTML = '';
+    }
+
+    // ---- the spin ---------------------------------------------------------------
+    function doSpin() {
+      if (state.spinning || spinsLeft() <= 0) return;
+      state.spinning = true;
+      hideResult();
+      renderControls(); // shows disabled "Spinning…" button
+      ensureAudio();
+
+      var w = pickWeighted();
+      // random landing spot inside the winning segment, kept off the edges
+      var targetLocal = w * SEG + SEG * (0.18 + Math.random() * 0.64);
+      var ptr = -Math.PI / 2; // pointer sits at the top of the canvas
+      var delta = ptr - targetLocal - state.angle;
+      delta = ((delta % TAU) + TAU) % TAU;
+      var totalTurn = delta + TAU * (5 + Math.floor(Math.random() * 3)); // 5–7 full turns
+      var startAngle = state.angle;
+      var lastBoundary = Math.floor(startAngle / SEG);
+
+      var t0 = performance.now();
+      var DUR = 4500;
+
+      function frame(now) {
+        if (state.dead) return;
+        var t = Math.min(1, (now - t0) / DUR);
+        var e = 1 - Math.pow(1 - t, 3); // easeOutCubic
+        state.angle = startAngle + totalTurn * e;
+        var b = Math.floor(state.angle / SEG);
+        if (b !== lastBoundary) {
+          lastBoundary = b;
+          tick();
+        }
+        draw(state.angle);
+        if (t < 1) {
+          state.raf = requestAnimationFrame(frame);
+        } else {
+          state.spinning = false;
+          winJingle();
+          var seg = SEGMENTS[w];
+          R.awardPoints(seg.points, 'spin');
+          R.onGameOver('spin');
+          localStorage.setItem(K_USED, String(readInt(K_USED) + 1));
+          showResult(seg);
+          updateStatus();
+          renderControls();
+        }
+      }
+      state.raf = requestAnimationFrame(frame);
+    }
+
+    // hub tap also spins
+    canvas.addEventListener('click', function (ev) {
+      if (state.spinning || spinsLeft() <= 0) return;
+      var rect = canvas.getBoundingClientRect();
+      var scale = SIZE / rect.width;
+      var x = (ev.clientX - rect.left) * scale;
+      var y = (ev.clientY - rect.top) * scale;
+      var dx = x - CX, dy = y - CY;
+      if (dx * dx + dy * dy <= 38 * 38) doSpin();
+    });
+
+    // ---- cleanup ------------------------------------------------------------------
+    el._jwaySpinCleanup = function () {
+      state.dead = true;
+      if (state.raf) cancelAnimationFrame(state.raf);
+      if (state.audioCtx) {
+        try { state.audioCtx.close(); } catch (e) { /* noop */ }
+        state.audioCtx = null;
+      }
+    };
+
+    // ---- boot -----------------------------------------------------------------------
+    updateStatus();
+    draw(state.angle);
+    renderControls();
+  }
+};
+
+</script>
+  <script>
+/* ---- js/games/scratch.js ---- */
+// ============================================================================
+// J-Way Rewards — Lucky Scratch Cards (js/games/scratch.js)
+//
+// Tap-to-scratch tickets. Prize is chosen when a card is created; a silver
+// layer on a top canvas is erased with destination-out pointer strokes while
+// the prize sits on a DOM layer underneath. Daily limits + bonus cards from
+// completed games via localStorage.
+// Contract: window.Games.scratch.start(el)
+// ============================================================================
+window.Games = window.Games || {};
+window.Games.scratch = {
+  start: function (el) {
+    'use strict';
+
+    // ---- cleanup any previous run ----------------------------------------
+    if (el._jwayScratchCleanup) {
+      try { el._jwayScratchCleanup(); } catch (e) { /* noop */ }
+      el._jwayScratchCleanup = null;
+    }
+    el.innerHTML = '';
+
+    var R = window.RewardsApp;
+
+    if (!R) {
+      var err = document.createElement('div');
+      err.className = 'card';
+      err.textContent = 'Scratch cards are unavailable right now — please reload the app.';
+      el.appendChild(err);
+      return;
+    }
+
+    var PRIZES = [
+      { points: 5,   weight: 30 },
+      { points: 10,  weight: 25 },
+      { points: 25,  weight: 20 },
+      { points: 50,  weight: 12 },
+      { points: 100, weight: 7  },
+      { points: 250, weight: 4  },
+      { points: 500, weight: 2  }
+    ];
+    var TOTAL_WEIGHT = PRIZES.reduce(function (s, p) { return s + p.weight; }, 0);
+
+    // ---- storage ----------------------------------------------------------
+    var K_DAY = 'jway_scratch_day';
+    var K_USED = 'jway_scratch_used';
+    var K_BUSED = 'jway_scratch_bonus_used';
+    var K_GAMEOVERS = 'jway_gameovers';
+
+    function readInt(k) {
+      var v = parseInt(localStorage.getItem(k), 10);
+      return isNaN(v) || v < 0 ? 0 : v;
+    }
+    function todayStr() {
+      var d = new Date();
+      function p(n) { return (n < 10 ? '0' : '') + n; }
+      return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    }
+    // roll over the DAILY card counter (bonus-card usage is lifetime, not daily)
+    if (localStorage.getItem(K_DAY) !== todayStr()) {
+      localStorage.setItem(K_DAY, todayStr());
+      localStorage.setItem(K_USED, '0');
+    }
+
+    var premium = R.isPremium();
+    var DAILY_FREE = premium ? 3 : 1;
+
+    function dailyLeft() { return Math.max(0, DAILY_FREE - readInt(K_USED)); }
+    function bonusLeft() {
+      var earned = Math.floor(readInt(K_GAMEOVERS) / 3);
+      return Math.max(0, earned - readInt(K_BUSED));
+    }
+    function cardsLeft() { return dailyLeft() + bonusLeft(); }
+
+    // ---- run state ----------------------------------------------------------
+    var state = { dead: false, cardOpen: false };
+
+    // ---- DOM ------------------------------------------------------------------
+    var title = document.createElement('h2');
+    title.className = 'section-title';
+    title.textContent = '🍀 Lucky Scratch Cards';
+    el.appendChild(title);
+
+    var counts = document.createElement('p');
+    counts.className = 'dim';
+    counts.style.textAlign = 'center';
+    counts.style.margin = '0 0 12px';
+    el.appendChild(counts);
+
+    var cardArea = document.createElement('div');
+    cardArea.style.minHeight = '220px';
+    el.appendChild(cardArea);
+
+    var back = document.createElement('button');
+    back.className = 'btn btn-secondary';
+    back.type = 'button';
+    back.style.marginTop = '16px';
+    back.textContent = '← Back to games';
+    back.addEventListener('click', function () { R.goToTab('games'); });
+    var backWrap = document.createElement('div');
+    backWrap.style.textAlign = 'center';
+    backWrap.appendChild(back);
+    el.appendChild(backWrap);
+
+    function updateCounts() {
+      var n = cardsLeft();
+      counts.textContent = 'Cards available: ' + n +
+        ' (' + dailyLeft() + ' daily + ' + bonusLeft() + ' bonus)';
+    }
+
+    function pickPrize() {
+      var r = Math.random() * TOTAL_WEIGHT;
+      for (var i = 0; i < PRIZES.length; i++) {
+        r -= PRIZES[i].weight;
+        if (r < 0) return PRIZES[i].points;
+      }
+      return PRIZES[0].points;
+    }
+
+    // ---- out of cards ----------------------------------------------------------
+    function renderOutOfCards() {
+      state.cardOpen = false;
+      cardArea.innerHTML = '';
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.style.textAlign = 'center';
+      var big = document.createElement('div');
+      big.className = 'big';
+      big.textContent = '🎟️ Out of cards!';
+      var p1 = document.createElement('p');
+      p1.className = 'dim';
+      p1.textContent = 'You\u2019ve used all your scratch cards.';
+      var p2 = document.createElement('p');
+      p2.className = 'dim';
+      p2.textContent = 'Come back tomorrow for more free cards — bonus cards are earned by playing games!';
+      card.appendChild(big);
+      card.appendChild(p1);
+      card.appendChild(p2);
+      cardArea.appendChild(card);
+    }
+
+    // ---- card back ("tap to scratch") -------------------------------------------
+    function renderCardBack() {
+      state.cardOpen = false;
+      cardArea.innerHTML = '';
+
+      var backCard = document.createElement('button');
+      backCard.type = 'button';
+      backCard.style.display = 'block';
+      backCard.style.width = '300px';
+      backCard.style.maxWidth = '100%';
+      backCard.style.margin = '0 auto';
+      backCard.style.padding = '44px 20px';
+      backCard.style.border = '3px dashed #ffd166';
+      backCard.style.borderRadius = '16px';
+      backCard.style.background = 'linear-gradient(135deg,#2b2d42,#3d4060)';
+      backCard.style.color = '#fff';
+      backCard.style.cursor = 'pointer';
+      backCard.style.font = 'inherit';
+
+      var emoji = document.createElement('div');
+      emoji.style.fontSize = '46px';
+      emoji.textContent = '🎫';
+      var label = document.createElement('div');
+      label.style.marginTop = '10px';
+      label.style.fontSize = '19px';
+      label.style.fontWeight = 'bold';
+      label.textContent = 'Tap to scratch';
+      var sub = document.createElement('div');
+      sub.className = 'dim';
+      sub.style.marginTop = '6px';
+      sub.style.color = '#c9ccda';
+      sub.textContent = 'A mystery prize is hiding underneath!';
+
+      backCard.appendChild(emoji);
+      backCard.appendChild(label);
+      backCard.appendChild(sub);
+      backCard.addEventListener('click', openCard);
+      cardArea.appendChild(backCard);
+    }
+
+    // ---- open (create) a card ------------------------------------------------------
+    function openCard() {
+      if (state.dead || state.cardOpen || cardsLeft() <= 0) return;
+      state.cardOpen = true;
+
+      var prize = pickPrize();            // prize decided at card creation
+      var useDaily = dailyLeft() > 0;     // which pool this card consumes
+      var W = 300, H = 150;
+      var dpr = Math.min(window.devicePixelRatio || 1, 3);
+
+      cardArea.innerHTML = '';
+
+      var hint = document.createElement('p');
+      hint.className = 'dim';
+      hint.style.textAlign = 'center';
+      hint.style.margin = '0 0 8px';
+      hint.textContent = '👆 Rub the silver layer to reveal your prize';
+      cardArea.appendChild(hint);
+
+      var wrap = document.createElement('div');
+      wrap.style.position = 'relative';
+      wrap.style.width = W + 'px';
+      wrap.style.maxWidth = '100%';
+      wrap.style.height = H + 'px';
+      wrap.style.margin = '0 auto';
+      wrap.style.borderRadius = '12px';
+      wrap.style.overflow = 'hidden';
+      wrap.style.boxShadow = '0 4px 14px rgba(0,0,0,0.25)';
+      cardArea.appendChild(wrap);
+
+      // prize layer underneath
+      var prizeLayer = document.createElement('div');
+      prizeLayer.style.position = 'absolute';
+      prizeLayer.style.inset = '0';
+      prizeLayer.style.display = 'flex';
+      prizeLayer.style.flexDirection = 'column';
+      prizeLayer.style.alignItems = 'center';
+      prizeLayer.style.justifyContent = 'center';
+      prizeLayer.style.background = 'linear-gradient(135deg,#fff7d6,#ffe27a)';
+      prizeLayer.style.color = '#5b3d00';
+      var pEmoji = document.createElement('div');
+      pEmoji.style.fontSize = '34px';
+      pEmoji.textContent = '🏆';
+      var pText = document.createElement('div');
+      pText.style.fontSize = '30px';
+      pText.style.fontWeight = 'bold';
+      pText.textContent = prize + ' PTS';
+      prizeLayer.appendChild(pEmoji);
+      prizeLayer.appendChild(pText);
+      wrap.appendChild(prizeLayer);
+
+      // silver scratch layer on top
+      var canvas = document.createElement('canvas');
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      canvas.style.position = 'absolute';
+      canvas.style.inset = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.touchAction = 'none';
+      canvas.style.cursor = 'crosshair';
+      var g = canvas.getContext('2d');
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      paintSilver(g, W, H);
+      wrap.appendChild(canvas);
+
+      // ---- scratching -----------------------------------------------------------
+      var scratching = false;
+      var last = null;
+      var finished = false;
+      var moveCount = 0;
+
+      function pos(ev) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: (ev.clientX - rect.left) * (W / rect.width),
+          y: (ev.clientY - rect.top) * (H / rect.height)
+        };
+      }
+      function eraseAt(x, y) {
+        g.save();
+        g.globalCompositeOperation = 'destination-out';
+        if (last) {
+          g.beginPath();
+          g.moveTo(last.x, last.y);
+          g.lineTo(x, y);
+          g.lineWidth = 28;
+          g.lineCap = 'round';
+          g.lineJoin = 'round';
+          g.stroke();
+        } else {
+          g.beginPath();
+          g.arc(x, y, 14, 0, Math.PI * 2);
+          g.fill();
+        }
+        g.restore();
+        last = { x: x, y: y };
+      }
+      function coverage() {
+        var step = Math.max(1, Math.round(12 * dpr));
+        var data = g.getImageData(0, 0, canvas.width, canvas.height).data;
+        var total = 0, cleared = 0;
+        for (var y = 0; y < canvas.height; y += step) {
+          for (var x = 0; x < canvas.width; x += step) {
+            total++;
+            if (data[((y * canvas.width) + x) * 4 + 3] < 128) cleared++;
+          }
+        }
+        return total ? cleared / total : 0;
+      }
+      function maybeFinish() {
+        if (finished || state.dead) return;
+        if (coverage() > 0.45) finishCard();
+      }
+
+      canvas.addEventListener('pointerdown', function (ev) {
+        if (finished || state.dead) return;
+        ev.preventDefault();
+        try { canvas.setPointerCapture(ev.pointerId); } catch (e) { /* noop */ }
+        scratching = true;
+        last = null;
+        var p = pos(ev);
+        eraseAt(p.x, p.y);
+      });
+      canvas.addEventListener('pointermove', function (ev) {
+        if (!scratching || finished || state.dead) return;
+        ev.preventDefault();
+        var p = pos(ev);
+        eraseAt(p.x, p.y);
+        moveCount++;
+        if (moveCount % 8 === 0) maybeFinish();
+      });
+      function stopScratch() {
+        if (!scratching) return;
+        scratching = false;
+        last = null;
+        maybeFinish();
+      }
+      canvas.addEventListener('pointerup', stopScratch);
+      canvas.addEventListener('pointercancel', stopScratch);
+
+      // ---- reveal + claim ----------------------------------------------------------
+      var claimRow = document.createElement('div');
+      claimRow.style.textAlign = 'center';
+      claimRow.style.marginTop = '14px';
+      cardArea.appendChild(claimRow);
+
+      function finishCard() {
+        finished = true;
+        // clear the rest of the silver layer
+        g.save();
+        g.globalCompositeOperation = 'destination-out';
+        g.fillRect(0, 0, W, H);
+        g.restore();
+        // fade the empty canvas away
+        canvas.style.transition = 'opacity 0.4s';
+        canvas.style.opacity = '0';
+        setTimeout(function () {
+          if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+        }, 450);
+
+        var claimBtn = document.createElement('button');
+        claimBtn.className = 'btn btn-primary';
+        claimBtn.type = 'button';
+        claimBtn.style.fontSize = '18px';
+        claimBtn.style.padding = '12px 34px';
+        claimBtn.textContent = 'Claim ' + prize + ' pts';
+        var claimed = false;
+        claimBtn.addEventListener('click', function () {
+          if (claimed || state.dead) return;
+          claimed = true;
+          claimBtn.disabled = true;
+          R.awardPoints(prize, 'scratch');
+          R.onGameOver('scratch');
+          if (useDaily) {
+            localStorage.setItem(K_USED, String(readInt(K_USED) + 1));
+          } else {
+            localStorage.setItem(K_BUSED, String(readInt(K_BUSED) + 1));
+          }
+          updateCounts();
+          renderClaimed(prize);
+        });
+        claimRow.appendChild(claimBtn);
+      }
+    }
+
+    function renderClaimed(prize) {
+      state.cardOpen = false;
+      cardArea.innerHTML = '';
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.style.textAlign = 'center';
+      var big = document.createElement('div');
+      big.className = 'big';
+      big.textContent = '✅ ' + prize + ' points claimed!';
+      card.appendChild(big);
+
+      if (cardsLeft() > 0) {
+        var nextBtn = document.createElement('button');
+        nextBtn.className = 'btn btn-primary';
+        nextBtn.type = 'button';
+        nextBtn.style.marginTop = '10px';
+        nextBtn.textContent = 'Scratch next card';
+        nextBtn.addEventListener('click', renderCardBack);
+        card.appendChild(nextBtn);
+      } else {
+        var p = document.createElement('p');
+        p.className = 'dim';
+        p.textContent = 'That was your last card — come back tomorrow for more!';
+        card.appendChild(p);
+      }
+      cardArea.appendChild(card);
+    }
+
+    function paintSilver(g, W, H) {
+      var grad = g.createLinearGradient(0, 0, W, H);
+      grad.addColorStop(0, '#cfcfcf');
+      grad.addColorStop(0.5, '#f4f4f4');
+      grad.addColorStop(1, '#bcbcbc');
+      g.fillStyle = grad;
+      g.fillRect(0, 0, W, H);
+      g.strokeStyle = 'rgba(255,255,255,0.55)';
+      g.lineWidth = 7;
+      for (var x = -H; x < W + H; x += 30) {
+        g.beginPath();
+        g.moveTo(x, 0);
+        g.lineTo(x + H, H);
+        g.stroke();
+      }
+      g.fillStyle = '#848b94';
+      g.font = 'bold 22px system-ui, sans-serif';
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.fillText('SCRATCH TO WIN', W / 2, H / 2);
+      g.strokeStyle = '#9aa0a8';
+      g.lineWidth = 4;
+      g.strokeRect(3, 3, W - 6, H - 6);
+    }
+
+    // ---- cleanup --------------------------------------------------------------------
+    el._jwayScratchCleanup = function () {
+      state.dead = true;
+    };
+
+    // ---- boot -------------------------------------------------------------------------
+    updateCounts();
+    if (cardsLeft() > 0) {
+      renderCardBack();
+    } else {
+      renderOutOfCards();
+    }
+  }
+};
+
+</script>
+  <script>
+/* ---- js/videos.js ---- */
+/* J-Way Rewards — Videos tab (Watch & Earn)
+ *
+ * Embeds the FactFuel TV uploads playlist via the official YouTube IFrame
+ * Player API and awards points for watch time. Exposes:
+ *   window.VideosTab = { render(el){} }
+ *
+ * Uses the shared contract from js/app.js and js/config.js:
+ *   window.RewardsApp.awardPoints(base, reason)
+ *   window.RewardsApp.toast(msg)
+ *   window.RewardsApp.goToTab(tabId)
+ */
+
+(function () {
+  'use strict';
+
+  // FactFuel TV uploads playlist (uploads playlist of channel UCH8YjQ7X7hB_2NPna1SEV8g)
+  var PLAYLIST_ID = 'UUH8YjQ7X7hB_2NPna1SEV8g';
+  var YT_API_SRC = 'https://www.youtube.com/iframe_api';
+  var YT_API_TIMEOUT_MS = 8000;
+
+  var EARN_SECONDS = 30;   // seconds of PLAYING watch time required to claim
+  var POINTS = 10;         // points awarded per claimed video
+  var CLAIM_STORAGE_KEY = 'jway_claimed_videos'; // localStorage JSON map: videoId -> 'YYYY-MM-DD'
+
+  // ---------------------------------------------------------------------------
+  // Claim ledger (one claim per video per day)
+  // ---------------------------------------------------------------------------
+  function loadLedger() {
+    try {
+      var raw = localStorage.getItem(CLAIM_STORAGE_KEY);
+      var map = raw ? JSON.parse(raw) : {};
+      return (map && typeof map === 'object') ? map : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveLedger(map) {
+    try {
+      localStorage.setItem(CLAIM_STORAGE_KEY, JSON.stringify(map));
+    } catch (e) { /* storage unavailable; claims just won't persist */ }
+  }
+
+  function todayKey() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  function isClaimedToday(videoId) {
+    if (!videoId) return false;
+    return loadLedger()[videoId] === todayKey();
+  }
+
+  function markClaimedToday(videoId) {
+    if (!videoId) return;
+    var map = loadLedger();
+    map[videoId] = todayKey();
+    saveLedger(map);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Load the YouTube IFrame API once (guard against duplicate script tags).
+  // Resolves true on load, false on timeout/error.
+  // ---------------------------------------------------------------------------
+  var ytApiPromise = null;
+
+  function loadYouTubeAPI() {
+    if (ytApiPromise) return ytApiPromise;
+
+    ytApiPromise = new Promise(function (resolve) {
+      // Already loaded?
+      if (window.YT && window.YT.Player) {
+        resolve(true);
+        return;
+      }
+
+      // Another tab/module may have injected the script already.
+      var existing = document.querySelector('script[src="' + YT_API_SRC + '"]');
+      if (!existing) {
+        existing = document.createElement('script');
+        existing.src = YT_API_SRC;
+        existing.async = true;
+        document.head.appendChild(existing);
+      }
+
+      var done = false;
+      function finish(ok) {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        resolve(ok);
+      }
+
+      var timer = setTimeout(function () {
+        finish(!!(window.YT && window.YT.Player));
+      }, YT_API_TIMEOUT_MS);
+
+      existing.addEventListener('load', function () {
+        // YT API defines onYouTubeIframeAPIReady; also poll in case it already fired.
+        if (window.YT && window.YT.Player) {
+          finish(true);
+        } else {
+          var prev = window.onYouTubeIframeAPIReady;
+          window.onYouTubeIframeAPIReady = function () {
+            if (typeof prev === 'function') prev();
+            finish(true);
+          };
+        }
+      });
+      existing.addEventListener('error', function () { finish(false); });
+    });
+
+    return ytApiPromise;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Tab module
+  // ---------------------------------------------------------------------------
+  window.VideosTab = {
+    render: function (el) {
+      el.innerHTML = '';
+
+      var header = document.createElement('h2');
+      header.textContent = 'Watch & Earn — 10 pts per video';
+      el.appendChild(header);
+
+      var sub = document.createElement('p');
+      sub.textContent = 'Watch ' + EARN_SECONDS + ' seconds of any FactFuel TV video to unlock a claim. Each video can be claimed once per day.';
+      el.appendChild(sub);
+
+      var wrap = document.createElement('div');
+      wrap.className = 'video-wrap';
+      el.appendChild(wrap);
+
+      var claimBtn = document.createElement('button');
+      claimBtn.className = 'btn btn-primary';
+      claimBtn.style.marginTop = '12px';
+      claimBtn.disabled = true;
+      claimBtn.textContent = 'Watch ' + EARN_SECONDS + 's to earn ' + POINTS + ' pts';
+      el.appendChild(claimBtn);
+
+      var progressNote = document.createElement('p');
+      progressNote.style.opacity = '0.7';
+      progressNote.style.fontSize = '0.9em';
+      progressNote.textContent = '';
+      el.appendChild(progressNote);
+
+      // --- Watch-to-earn state ---------------------------------------------
+      var player = null;
+      var tickTimer = null;      // 1s interval while PLAYING
+      var watchedSeconds = 0;    // cumulative PLAYING seconds since last claim/reset
+      var currentVideoId = null;
+
+      function resetWatchTimer() {
+        watchedSeconds = 0;
+        stopTicking();
+        updateClaimButton();
+      }
+
+      function startTicking() {
+        stopTicking();
+        tickTimer = setInterval(function () {
+          watchedSeconds += 1;
+          var remaining = EARN_SECONDS - watchedSeconds;
+          if (remaining > 0) {
+            claimBtn.textContent = 'Watch ' + remaining + 's more to earn ' + POINTS + ' pts';
+            progressNote.textContent = 'Watched ' + watchedSeconds + 's / ' + EARN_SECONDS + 's';
+          } else {
+            updateClaimButton();
+          }
+        }, 1000);
+      }
+
+      function stopTicking() {
+        if (tickTimer) {
+          clearInterval(tickTimer);
+          tickTimer = null;
+        }
+      }
+
+      function refreshCurrentVideo() {
+        try {
+          if (player && typeof player.getVideoData === 'function') {
+            var data = player.getVideoData();
+            var vid = data && data.video_id ? data.video_id : null;
+            if (vid && vid !== currentVideoId) {
+              currentVideoId = vid;
+              resetWatchTimer(); // new video → fresh 30s window
+            }
+          }
+        } catch (e) { /* player not ready */ }
+      }
+
+      function updateClaimButton() {
+        stopTicking();
+        if (watchedSeconds < EARN_SECONDS) {
+          claimBtn.disabled = true;
+          claimBtn.textContent = 'Watch ' + EARN_SECONDS + 's to earn ' + POINTS + ' pts';
+          progressNote.textContent = '';
+          return;
+        }
+        if (isClaimedToday(currentVideoId)) {
+          claimBtn.disabled = true;
+          claimBtn.textContent = 'Claimed ✓';
+          progressNote.textContent = 'Already claimed today — try another video!';
+        } else {
+          claimBtn.disabled = false;
+          claimBtn.textContent = 'Claim ' + POINTS + ' pts';
+          progressNote.textContent = '';
+        }
+      }
+
+      claimBtn.addEventListener('click', function () {
+        if (claimBtn.disabled) return;
+        if (!currentVideoId) {
+          window.RewardsApp.toast('Start playing a video first.');
+          return;
+        }
+        if (isClaimedToday(currentVideoId)) {
+          updateClaimButton();
+          return;
+        }
+        window.RewardsApp.awardPoints(POINTS, 'video'); // also shows the +pts toast
+        markClaimedToday(currentVideoId);
+        resetWatchTimer(); // next video gets its own fresh 30s window
+        claimBtn.textContent = 'Claimed ✓';
+        claimBtn.disabled = true;
+      });
+
+      function onStateChange(event) {
+        var state = event.data;
+        if (state === window.YT.PlayerState.PLAYING) {
+          refreshCurrentVideo();
+          if (watchedSeconds < EARN_SECONDS) startTicking();
+        } else {
+          stopTicking(); // paused/ended/cued — cumulative counter stays
+          if (state === window.YT.PlayerState.CUED || state === window.YT.PlayerState.UNSTARTED) {
+            refreshCurrentVideo();
+          }
+        }
+      }
+
+      function createPlayer() {
+        var container = document.createElement('div');
+        container.id = 'jway-yt-player';
+        container.style.width = '100%';
+        wrap.appendChild(container);
+
+        player = new window.YT.Player(container, {
+          width: '100%',
+          playerVars: {
+            listType: 'playlist',
+            list: PLAYLIST_ID,
+            rel: 0
+          },
+          events: {
+            onStateChange: onStateChange,
+            onReady: function () { refreshCurrentVideo(); }
+          }
+        });
+      }
+
+      function showFallback() {
+        var note = document.createElement('p');
+        note.textContent = 'The full YouTube player could not load, so watch rewards are unavailable here — you can still watch the playlist below.';
+        note.style.opacity = '0.8';
+        wrap.appendChild(note);
+
+        var frame = document.createElement('iframe');
+        frame.width = '100%';
+        frame.height = '315';
+        frame.src = 'https://www.youtube.com/embed?listType=playlist&list=' + PLAYLIST_ID;
+        frame.title = 'FactFuel TV uploads playlist';
+        frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        frame.allowFullscreen = true;
+        wrap.appendChild(frame);
+
+        claimBtn.disabled = true;
+        claimBtn.textContent = 'Watch rewards need the full player';
+      }
+
+      // If the tab re-renders, make sure the old player stops ticking.
+      // (The element is replaced, so also destroy the player instance.)
+      var obs = new MutationObserver(function () {
+        if (!document.contains(wrap)) {
+          stopTicking();
+          try { if (player && player.destroy) player.destroy(); } catch (e) {}
+          obs.disconnect();
+        }
+      });
+      obs.observe(document.body, { childList: true, subtree: true });
+
+      loadYouTubeAPI().then(function (ok) {
+        if (ok && window.YT && window.YT.Player) {
+          try {
+            createPlayer();
+          } catch (e) {
+            showFallback();
+          }
+        } else {
+          showFallback();
+        }
+      });
+    }
+  };
+})();
+
+</script>
+  <script>
+/* ---- js/surveys.js ---- */
+/* J-Way Rewards — Surveys tab
+ *
+ * Integrates the Pollfish survey SDK. The API key lives in js/config.js:
+ *
+ *     window.RewardsConfig.POLLFISH_API_KEY = '<JUSTIN: paste your Pollfish API key here>';
+ *
+ * PRODUCTION NOTE: reward callbacks should be verified server-side in
+ * production (validate the Pollfish server-to-server callback against your
+ * backend before awarding points). This MVP awards points client-side on the
+ * survey-complete callback, which is fine for a trusted preview build but
+ * should NOT be relied on for real payouts without backend verification.
+ *
+ * Exposes: window.SurveysTab = { render(el){} }
+ *
+ * Uses the shared contract from js/app.js and js/config.js:
+ *   window.RewardsConfig.POLLFISH_API_KEY
+ *   window.RewardsApp.awardPoints(base, reason)
+ *   window.RewardsApp.toast(msg)
+ *   window.RewardsApp.goToTab(tabId)
+ */
+
+(function () {
+  'use strict';
+
+  var POLLFISH_SDK_SRC = 'https://storage.googleapis.com/pollfish_production/sdk/webplugin/pollfish.min.js';
+  var POINTS = 50;
+
+  // ---------------------------------------------------------------------------
+  // Config helper — treats empty / placeholder keys as "not configured".
+  // Justin: replace the placeholder in js/config.js with your real Pollfish key.
+  // ---------------------------------------------------------------------------
+  function getApiKey() {
+    var key = '';
+    try {
+      key = (window.RewardsConfig && window.RewardsConfig.POLLFISH_API_KEY) || '';
+    } catch (e) {
+      key = '';
+    }
+    key = String(key).trim();
+    if (!key || key.indexOf('XXXX') !== -1) return '';
+    return key;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Load the Pollfish web SDK once. Resolves with the loaded Pollfish object,
+  // or null if the script fails.
+  // ---------------------------------------------------------------------------
+  var pollfishPromise = null;
+
+  function loadPollfishSdk() {
+    if (pollfishPromise) return pollfishPromise;
+
+    pollfishPromise = new Promise(function (resolve) {
+      try {
+        if (window.Pollfish) {
+          resolve(window.Pollfish);
+          return;
+        }
+        var existing = document.querySelector('script[src="' + POLLFISH_SDK_SRC + '"]');
+        if (!existing) {
+          existing = document.createElement('script');
+          existing.src = POLLFISH_SDK_SRC;
+          existing.async = true;
+          document.head.appendChild(existing);
+        }
+        existing.addEventListener('load', function () {
+          resolve(window.Pollfish || null);
+        });
+        existing.addEventListener('error', function () {
+          resolve(null);
+        });
+      } catch (e) {
+        resolve(null);
+      }
+    });
+
+    return pollfishPromise;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Tab module
+  // ---------------------------------------------------------------------------
+  window.SurveysTab = {
+    render: function (el) {
+      el.innerHTML = '';
+
+      var header = document.createElement('h2');
+      header.textContent = 'Surveys — 50 pts each';
+      el.appendChild(header);
+
+      var apiKey = getApiKey();
+
+      // --- Not configured: friendly card, no dead buttons --------------------
+      if (!apiKey) {
+        var card = document.createElement('div');
+        card.className = 'card';
+
+        var title = document.createElement('h3');
+        title.textContent = '📋 Surveys';
+        card.appendChild(title);
+
+        var msg = document.createElement('p');
+        msg.textContent = 'Surveys are coming soon — check back after launch!';
+        card.appendChild(msg);
+
+        var hint = document.createElement('p');
+        hint.style.opacity = '0.7';
+        hint.style.fontSize = '0.9em';
+        hint.textContent = 'Answer short surveys to earn ' + POINTS + ' points each. Survey offers will appear here once they are enabled.';
+        card.appendChild(hint);
+
+        el.appendChild(card);
+        return;
+      }
+
+      // --- Configured: load SDK and show survey entry point -------------------
+      var card2 = document.createElement('div');
+      card2.className = 'card';
+
+      var title2 = document.createElement('h3');
+      title2.textContent = '📋 Take a survey';
+      card2.appendChild(title2);
+
+      var desc = document.createElement('p');
+      desc.textContent = 'Complete a short survey to earn ' + POINTS + ' points. One reward per completed survey.';
+      card2.appendChild(desc);
+
+      var status = document.createElement('p');
+      status.style.opacity = '0.7';
+      status.style.fontSize = '0.9em';
+      status.textContent = 'Loading surveys…';
+      card2.appendChild(status);
+
+      var surveyBtn = document.createElement('button');
+      surveyBtn.className = 'btn btn-primary';
+      surveyBtn.disabled = true;
+      surveyBtn.textContent = 'Check for surveys';
+      card2.appendChild(surveyBtn);
+
+      el.appendChild(card2);
+
+      var sdkInstance = null;
+
+      function awardSurvey() {
+        try {
+          window.RewardsApp.awardPoints(POINTS, 'survey'); // also shows the +pts toast
+        } catch (e) {
+          window.RewardsApp.toast('Survey complete!');
+        }
+        status.textContent = 'Thanks! New surveys appear as they become available.';
+        surveyBtn.disabled = true;
+        surveyBtn.textContent = 'No surveys right now';
+      }
+
+      surveyBtn.addEventListener('click', function () {
+        try {
+          // Pollfish web plugin opens available surveys when show() is called.
+          // Adjust the call below if your SDK version names it differently
+          // (e.g. Pollfish.init returns an object with open/show methods).
+          if (sdkInstance && typeof sdkInstance.show === 'function') {
+            sdkInstance.show();
+          } else if (window.Pollfish && typeof window.Pollfish.show === 'function') {
+            window.Pollfish.show();
+          } else {
+            status.textContent = 'Surveys could not be opened. Please try again later.';
+          }
+        } catch (e) {
+          status.textContent = 'Surveys could not be opened. Please try again later.';
+        }
+      });
+
+      loadPollfishSdk().then(function (Pollfish) {
+        if (!Pollfish) {
+          status.textContent = 'Could not load the survey provider. Please try again later.';
+          surveyBtn.disabled = true;
+          return;
+        }
+        try {
+          // Initialise the Pollfish web plugin with Justin's key from js/config.js.
+          // onSurveyCompleted fires when the user finishes a survey — award 50 pts.
+          // PRODUCTION: verify this callback server-side before crediting points.
+          var options = {
+            api_key: apiKey,
+            onSurveyCompleted: function (surveyInfo) {
+              awardSurvey();
+            },
+            onSurveyNotAvailable: function () {
+              status.textContent = 'No surveys available right now — check back soon.';
+              surveyBtn.disabled = true;
+              surveyBtn.textContent = 'No surveys right now';
+            },
+            onUserRejectedSurvey: function () {
+              status.textContent = 'Survey skipped. Tap below if a survey is available.';
+            }
+          };
+
+          if (typeof Pollfish.init === 'function') {
+            sdkInstance = Pollfish.init(options) || null;
+          } else {
+            // Older plugin style: configure via global and read Pollfish directly.
+            sdkInstance = Pollfish;
+          }
+
+          status.textContent = 'Surveys are ready. Tap below to see what is available.';
+          surveyBtn.disabled = false;
+        } catch (e) {
+          status.textContent = 'Surveys failed to initialise. Please try again later.';
+          surveyBtn.disabled = true;
+        }
+      });
+    }
+  };
+})();
+
+</script>
+  <script>
+/* ---- js/premium.js ---- */
+/* J-Way Rewards — Premium tab
+ *
+ * Premium upsell / status screen. Exposes:
+ *   window.PremiumTab = { render(el){} }
+ *
+ * IMPORTANT: this is the WEB build only — no real payment processing happens
+ * here. Real purchases are handled by Google Play Billing inside the packaged
+ * Android app (see the clearly-commented skeleton in buyPremium() below).
+ * In the web preview, buying is replaced by an explicitly-labelled DEMO MODE
+ * confirm dialog that flips the local premium flag.
+ *
+ * The product SKU lives in js/config.js:
+ *     window.RewardsConfig.PREMIUM_SKU = 'jway_premium_onetime';
+ *
+ * Uses the shared contract from js/app.js and js/config.js:
+ *   window.RewardsApp.isPremium() -> bool
+ *   window.RewardsApp.setPremium(v)
+ *   window.RewardsApp.toast(msg)
+ *   window.RewardsApp.goToTab(tabId)
+ *   window.RewardsConfig.PREMIUM_SKU
+ */
+
+(function () {
+  'use strict';
+
+  var PRICE = '$4.99';
+
+  var PERKS = [
+    'No ads',
+    '2x points on everything',
+    'Bonus Trivia Pack (15 extra questions)',
+    'All games unlocked forever'
+  ];
+
+  function getSku() {
+    try {
+      return (window.RewardsConfig && window.RewardsConfig.PREMIUM_SKU) || 'jway_premium_onetime';
+    } catch (e) {
+      return 'jway_premium_onetime';
+    }
+  }
+
+  /**
+   * buyPremium — purchase entry point.
+   *
+   * If the app is running inside Capacitor on Android with a Play Billing
+   * plugin present, this should call the plugin's purchase flow for
+   * RewardsConfig.PREMIUM_SKU (one-time purchase). Skeleton integration:
+   *
+   *     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.PlayBilling) {
+   *       var PlayBilling = window.Capacitor.Plugins.PlayBilling;
+   *       try {
+   *         // 1. Query SKU details so we can show the real Play price.
+   *         var details = await PlayBilling.querySkuDetails({ skus: [RewardsConfig.PREMIUM_SKU] });
+   *         // 2. Launch the Google Play purchase flow.
+   *         var result = await PlayBilling.purchase({ sku: RewardsConfig.PREMIUM_SKU });
+   *         // 3. Verify the purchase token with your backend (REQUIRED in
+   *         //    production — never trust the client alone), then:
+   *         //    acknowledge the purchase via PlayBilling.acknowledgePurchase(...)
+   *         // 4. RewardsApp.setPremium(true); re-render.
+   *       } catch (e) {
+   *         // User cancelled or purchase failed — show a friendly error.
+   *       }
+   *       return;
+   *     }
+   *
+   * Web preview fallback (DEMO MODE): no real payment is processed. The
+   * confirm() dialog is explicitly labelled so nobody mistakes it for a
+   * real charge.
+   */
+  function buyPremium(onDone) {
+    var hasPlayBilling = !!(
+      window.Capacitor &&
+      window.Capacitor.Plugins &&
+      window.Capacitor.Plugins.PlayBilling
+    );
+
+    if (hasPlayBilling) {
+      // ---- Google Play Billing integration (packaged Android app) ----
+      // NOTE: Replace this stub with the real plugin calls (see the skeleton
+      // comment above). The SKU to purchase is getSku().
+      var PlayBilling = window.Capacitor.Plugins.PlayBilling;
+      window.RewardsApp.toast('Opening Google Play… (SKU: ' + getSku() + ')');
+      try {
+        var maybePromise = PlayBilling.purchase
+          ? PlayBilling.purchase({ sku: getSku() })
+          : null;
+        if (maybePromise && typeof maybePromise.then === 'function') {
+          maybePromise.then(function () {
+            // Production: verify + acknowledge on your backend first.
+            window.RewardsApp.setPremium(true);
+            window.RewardsApp.toast('Premium activated!');
+            if (typeof onDone === 'function') onDone();
+          }).catch(function () {
+            window.RewardsApp.toast('Purchase cancelled or failed.');
+          });
+        } else {
+          // Plugin present but no purchase() API — fall through to demo note.
+          window.RewardsApp.toast('Billing plugin not wired up yet — see code comments.');
+        }
+      } catch (e) {
+        window.RewardsApp.toast('Purchase failed. Please try again.');
+      }
+      return;
+    }
+
+    // ---- DEMO MODE: web preview only, NO real payment is processed ----
+    var ok = window.confirm(
+      'DEMO MODE (web preview only)\n\n' +
+      'This would buy J-Way Premium for ' + PRICE + ' (one-time) in the real app.\n\n' +
+      'No payment is processed here. Press OK to simulate a successful purchase.'
+    );
+    if (ok) {
+      window.RewardsApp.setPremium(true);
+      window.RewardsApp.toast('Premium unlocked (demo)');
+      if (typeof onDone === 'function') onDone();
+    }
+  }
+
+  /**
+   * Restore a previous purchase (stub).
+   * In the packaged Android app, query Play Billing for owned purchases of
+   * RewardsConfig.PREMIUM_SKU and flip the local flag if owned. The
+   * localStorage re-check below is the web-preview stand-in.
+   */
+  function restorePurchase(onDone) {
+    var hasPlayBilling = !!(
+      window.Capacitor &&
+      window.Capacitor.Plugins &&
+      window.Capacitor.Plugins.PlayBilling
+    );
+
+    if (hasPlayBilling) {
+      // Production: call PlayBilling.queryPurchases({ skuType: 'inapp' }),
+      // verify any owned purchase of getSku() server-side, then setPremium(true).
+      window.RewardsApp.toast('Checking Google Play for past purchases… (stub)');
+      return;
+    }
+
+    if (window.RewardsApp.isPremium()) {
+      window.RewardsApp.toast('Premium already active on this device.');
+    } else {
+      window.RewardsApp.toast('No previous purchase found on this device.');
+    }
+    if (typeof onDone === 'function') onDone();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Tab module
+  // ---------------------------------------------------------------------------
+  window.PremiumTab = {
+    render: function (el) {
+      el.innerHTML = '';
+
+      function perkList() {
+        var ul = document.createElement('ul');
+        ul.className = 'perk-list';
+        PERKS.forEach(function (perk) {
+          var li = document.createElement('li');
+          li.textContent = perk;
+          ul.appendChild(li);
+        });
+        return ul;
+      }
+
+      // --- Premium active ----------------------------------------------------
+      if (window.RewardsApp.isPremium()) {
+        var card = document.createElement('div');
+        card.className = 'card';
+
+        var title = document.createElement('h2');
+        title.innerHTML = '👑 You\'re Premium! <span class="badge-premium">PREMIUM</span>';
+        card.appendChild(title);
+
+        var sub = document.createElement('p');
+        sub.textContent = 'Thanks for supporting J-Way Rewards. Your perks are active:';
+        card.appendChild(sub);
+
+        card.appendChild(perkList());
+
+        var restoreBtn = document.createElement('button');
+        restoreBtn.className = 'btn btn-secondary';
+        restoreBtn.style.marginTop = '12px';
+        restoreBtn.textContent = 'Restore purchase';
+        restoreBtn.addEventListener('click', function () {
+          restorePurchase(function () {
+            window.PremiumTab.render(el);
+          });
+        });
+        card.appendChild(restoreBtn);
+
+        el.appendChild(card);
+        return;
+      }
+
+      // --- Not premium: pitch screen -----------------------------------------
+      var pitch = document.createElement('div');
+      pitch.className = 'card';
+
+      var head = document.createElement('h2');
+      head.textContent = 'Go Premium — ' + PRICE + ' one-time';
+      pitch.appendChild(head);
+
+      var tagline = document.createElement('p');
+      tagline.textContent = 'One purchase. No subscription. All the perks, forever.';
+      pitch.appendChild(tagline);
+
+      pitch.appendChild(perkList());
+
+      var buyBtn = document.createElement('button');
+      buyBtn.className = 'btn btn-primary';
+      buyBtn.style.marginTop = '12px';
+      buyBtn.textContent = 'Buy Premium — ' + PRICE;
+      buyBtn.addEventListener('click', function () {
+        buyPremium(function () {
+          window.PremiumTab.render(el);
+        });
+      });
+      pitch.appendChild(buyBtn);
+
+      var fine = document.createElement('p');
+      fine.style.opacity = '0.7';
+      fine.style.fontSize = '0.9em';
+      fine.textContent = 'Charged once via Google Play in the Android app. Restore anytime on a new device.';
+      pitch.appendChild(fine);
+
+      el.appendChild(pitch);
+    }
+  };
+
+  // Expose for potential external wiring (tests / deep links).
+  window.PremiumTab._buyPremium = buyPremium;
+  window.PremiumTab._restorePurchase = restorePurchase;
+})();
+
+</script>
+  <script>
+/* ---- js/app.js ---- */
+// ============================================================================
+// J-Way Rewards — app shell (js/app.js) — loaded LAST
+// ============================================================================
+document.addEventListener('DOMContentLoaded', function () {
+  'use strict';
+
+  // ---------- storage ----------
+  var LS_POINTS = 'jway_points';
+  var LS_PREMIUM = 'jway_premium';
+  var LS_GAMEOVERS = 'jway_gameovers';
+
+  function readInt(key) {
+    var v = parseInt(localStorage.getItem(key), 10);
+    return isNaN(v) || v < 0 ? 0 : v;
+  }
+
+  // ---------- DOM refs ----------
+  var headerEl = document.getElementById('app-header');
+  var mainEl = document.getElementById('tab-content');
+  var navEl = document.getElementById('tab-bar');
+  var toastEl = document.getElementById('toast');
+
+  // ---------- header ----------
+  function renderHeader() {
+    var premium = isPremium();
+    headerEl.innerHTML = '';
+    var brand = document.createElement('span');
+    brand.className = 'brand';
+    brand.textContent = '⚡ J-Way Rewards';
+
+    var right = document.createElement('div');
+    right.className = 'header-right';
+
+    var pill = document.createElement('span');
+    pill.className = 'points-pill';
+    pill.innerHTML = '⭐ <span id="points-val"></span>';
+    pill.querySelector('#points-val').textContent = readInt(LS_POINTS);
+
+    var badge = document.createElement('span');
+    badge.className = 'badge-premium' + (premium ? ' on' : '');
+    badge.textContent = 'PREMIUM';
+
+    right.appendChild(pill);
+    right.appendChild(badge);
+    headerEl.appendChild(brand);
+    headerEl.appendChild(right);
+  }
+
+  // ---------- toast ----------
+  var toastTimer = null;
+  function toast(msg) {
+    toastEl.textContent = String(msg);
+    toastEl.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove('show');
+    }, 1800);
+  }
+
+  // ---------- points / premium ----------
+  function getPoints() { return readInt(LS_POINTS); }
+  function isPremium() { return localStorage.getItem(LS_PREMIUM) === '1'; }
+
+  function setPremium(v) {
+    localStorage.setItem(LS_PREMIUM, v ? '1' : '0');
+    renderHeader();
+    // Re-render premium tab if it's visible
+    if (currentTab === 'premium') renderTab('premium');
+  }
+
+  function awardPoints(base, reason) {
+    var awarded = Math.round(Number(base) || 0);
+    if (awarded <= 0) return 0;
+    if (isPremium()) awarded = awarded * 2;
+    var total = readInt(LS_POINTS) + awarded;
+    localStorage.setItem(LS_POINTS, String(total));
+    var val = document.getElementById('points-val');
+    if (val) val.textContent = total;
+    toast('+' + awarded + ' pts');
+    return awarded;
+  }
+
+  // ---------- game over → interstitial every 3rd ----------
+  function onGameOver(gameId) {
+    var n = readInt(LS_GAMEOVERS) + 1;
+    localStorage.setItem(LS_GAMEOVERS, String(n));
+    // Premium members never see ads.
+    if (!isPremium() && n % 3 === 0 && window.Ads && typeof window.Ads.showInterstitial === 'function') {
+      window.Ads.showInterstitial();
+    }
+  }
+
+  // ---------- tabs ----------
+  var TABS = [
+    { id: 'games',   label: 'Games',   emoji: '🎮' },
+    { id: 'videos',  label: 'Videos',  emoji: '📺' },
+    { id: 'surveys', label: 'Surveys', emoji: '📝' },
+    { id: 'premium', label: 'Premium', emoji: '👑' }
+  ];
+  var currentTab = 'games';
+
+  function renderNav() {
+    navEl.innerHTML = '';
+    TABS.forEach(function (t) {
+      var btn = document.createElement('button');
+      btn.className = 'tab-btn' + (t.id === currentTab ? ' active' : '');
+      btn.type = 'button';
+      btn.setAttribute('data-tab', t.id);
+      var e = document.createElement('span');
+      e.className = 'tab-emoji';
+      e.textContent = t.emoji;
+      var l = document.createElement('span');
+      l.textContent = t.label;
+      btn.appendChild(e);
+      btn.appendChild(l);
+      btn.addEventListener('click', function () { goToTab(t.id); });
+      navEl.appendChild(btn);
+    });
+  }
+
+  function errorCard(title, detail) {
+    var card = document.createElement('div');
+    card.className = 'card';
+    var h = document.createElement('div');
+    h.className = 'big';
+    h.textContent = title;
+    var p = document.createElement('p');
+    p.className = 'dim';
+    p.textContent = detail;
+    card.appendChild(h);
+    card.appendChild(p);
+    return card;
+  }
+
+  // games tab: sub-picker of 3 games
+  var GAME_DEFS = [
+    { key: 'trivia',   name: 'FactFuel Trivia', emoji: '🧠', desc: 'Quick-fire trivia questions. Streak bonuses!' },
+    { key: 'memory',   name: 'Memory Match',    emoji: '🃏', desc: 'Flip pairs under the clock. Fewer moves, more points.' },
+    { key: 'reaction', name: 'Reaction Tap',    emoji: '⚡', desc: 'Tap the instant it turns green. Beat your best time.' },
+    { key: 'spin',     name: 'Daily Spin',      emoji: '🎡', desc: 'Spin the lucky wheel. Jackpot: 1,000 pts!' },
+    { key: 'scratch',  name: 'Scratch Cards',   emoji: '🎫', desc: 'Scratch to reveal hidden point prizes.' }
+  ];
+
+  function renderGames(container) {
+    var title = document.createElement('h2');
+    title.className = 'section-title';
+    title.textContent = 'Pick a game';
+    container.appendChild(title);
+
+    var picker = document.createElement('div');
+    picker.className = 'game-picker';
+
+    GAME_DEFS.forEach(function (g) {
+      var card = document.createElement('button');
+      card.className = 'game-card';
+      card.type = 'button';
+
+      var h3 = document.createElement('h3');
+      var emoji = document.createElement('span');
+      emoji.className = 'game-emoji';
+      emoji.textContent = g.emoji;
+      h3.appendChild(emoji);
+      h3.appendChild(document.createTextNode(g.name));
+
+      var p = document.createElement('p');
+      p.textContent = g.desc;
+
+      card.appendChild(h3);
+      card.appendChild(p);
+      card.addEventListener('click', function () {
+        var mod = window.Games && window.Games[g.key];
+        container.innerHTML = '';
+        if (mod && typeof mod.start === 'function') {
+          mod.start(container);
+        } else {
+          container.appendChild(errorCard('😢 Game failed to load', g.name + ' is not available right now.'));
+          var back = document.createElement('button');
+          back.className = 'btn btn-secondary mt';
+          back.textContent = '← Back to games';
+          back.addEventListener('click', function () { renderTab('games'); });
+          container.appendChild(back);
+        }
+      });
+      picker.appendChild(card);
+    });
+
+    container.appendChild(picker);
+  }
+
+  function renderTab(tabId) {
+    currentTab = tabId;
+    mainEl.innerHTML = '';
+    if (tabId === 'games') {
+      renderGames(mainEl);
+    } else if (tabId === 'videos') {
+      if (window.VideosTab && typeof window.VideosTab.render === 'function') {
+        window.VideosTab.render(mainEl);
+      } else {
+        mainEl.appendChild(errorCard('📺 Videos coming soon', 'Video rewards are not available yet.'));
+      }
+    } else if (tabId === 'surveys') {
+      if (window.SurveysTab && typeof window.SurveysTab.render === 'function') {
+        window.SurveysTab.render(mainEl);
+      } else {
+        mainEl.appendChild(errorCard('📝 Surveys coming soon', 'Survey rewards are not available yet.'));
+      }
+    } else if (tabId === 'premium') {
+      if (window.PremiumTab && typeof window.PremiumTab.render === 'function') {
+        window.PremiumTab.render(mainEl);
+      } else {
+        mainEl.appendChild(errorCard('👑 Premium coming soon', 'Premium details are not available yet.'));
+      }
+    }
+    renderNav();
+  }
+
+  function goToTab(tabId) {
+    var valid = TABS.some(function (t) { return t.id === tabId; });
+    renderTab(valid ? tabId : 'games');
+  }
+
+  // ---------- public API (exact contract) ----------
+  window.RewardsApp = {
+    awardPoints: awardPoints,
+    onGameOver: onGameOver,
+    toast: toast,
+    isPremium: isPremium,
+    setPremium: setPremium,
+    getPoints: getPoints,
+    goToTab: goToTab
+  };
+
+  // ---------- boot ----------
+  renderHeader();
+  renderTab('games');
+  if (window.Ads && typeof window.Ads.showBanner === 'function') {
+    window.Ads.showBanner();
+  }
+});
+
+</script>
+<footer style="text-align:center;padding:16px;font-size:12px;opacity:.7"><a href="privacy.html" style="color:inherit">Privacy Policy</a></footer>
+</body>
+</html>
